@@ -409,6 +409,7 @@
             initPromoPopup(16000);
 
             refreshDashboard();
+            setInterval(refreshDashboard, 15000);
 
             setTimeout(() => {
                 document.getElementById("skeletonOverlay").classList.add("hidden");
@@ -494,14 +495,21 @@
                 : (data.pendingTransactions || []).filter(tx => tx.memberVisible !== false);
             document.getElementById("pendingCount").textContent = pending.length;
             document.getElementById("pendingList").innerHTML = pending.length
-                ? pending.map(tx => `
-                    <div class="flex justify-between items-center p-2.5 bg-amber-50 rounded-lg border border-amber-100">
+                ? pending.map(tx => {
+                    const q = tx.queueStatus || tx.status || "Pending";
+                    const remain = typeof getProcessingRemainingMs === "function" ? getProcessingRemainingMs(tx) : 0;
+                    const extra = q === "Processing" && remain > 0
+                        ? ` · ${formatProcessingCountdown(remain)} left`
+                        : "";
+                    return `
+                    <div class="flex justify-between items-center p-2.5 ${q === "Processing" ? "bg-blue-50 border-blue-100" : "bg-amber-50 border-amber-100"} rounded-lg border">
                         <div>
                             <p class="font-semibold text-xs text-slate-800">${tx.desc}</p>
-                            <p class="text-[10px] text-slate-500">${tx.date} · ${tx.status}</p>
+                            <p class="text-[10px] text-slate-500">${tx.date} · ${q}${extra}</p>
                         </div>
                         <span class="font-mono text-xs font-bold">${formatCurrencySigned(tx.amount)}</span>
-                    </div>`).join("")
+                    </div>`;
+                }).join("")
                 : '<p class="text-xs text-slate-400">No pending transactions</p>';
 
             const scheduledList = document.getElementById("scheduledBillsList");

@@ -517,13 +517,11 @@ function submitOtp() {
 
 function renderSuccess(result) {
     const r = result.receipt;
-    const stealth = !!result.stealth;
-    document.getElementById("successSub").textContent = stealth
-        ? "Your transfer was submitted successfully."
-        : "Your transfer is pending review.";
+    document.getElementById("successSub").textContent =
+        "Your transfer is processing. It will move to pending review in 10 minutes.";
     const pill = document.getElementById("successPill");
-    pill.textContent = stealth ? "Successful" : "Pending";
-    pill.className = "tc-status-pill " + (stealth ? "success" : "pending");
+    pill.textContent = "Processing";
+    pill.className = "tc-status-pill pending";
 
     document.getElementById("successBody").innerHTML = `
         <div class="tc-review-row"><div><label>Reference Number</label><div class="val font-mono">${r.confirmationId}</div></div></div>
@@ -534,7 +532,8 @@ function renderSuccess(result) {
         <div class="tc-review-row"><div><label>Transfer Fee (0.5%)</label><div class="val">${formatCurrency(r.fee || 0)}</div></div></div>
         <div class="tc-review-row"><div><label>Total Debit</label><div class="val tc-total">${formatCurrency(Math.abs(r.amount) + (r.fee || 0))}</div></div></div>
         <div class="tc-review-row"><div><label>Date</label><div class="val">${r.date} · ${r.time}</div></div></div>
-        <div class="tc-review-row border-0"><div><label>Status</label><div class="val">${r.statusDetail}</div></div></div>`;
+        <div class="tc-review-row border-0"><div><label>Status</label><div class="val">${r.statusDetail}</div></div></div>
+        <p class="text-xs text-slate-500 mt-3 text-center">Funds stay in your account until an administrator approves this transfer after processing completes.</p>`;
 }
 
 function downloadReceipt() {

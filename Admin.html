@@ -50,7 +50,7 @@
         <section class="card-premium bg-slate-800 border-slate-700 overflow-hidden">
             <div class="p-5 border-b border-slate-700">
                 <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400">Transfer &amp; Transaction Queue</h3>
-                <p class="text-[11px] text-slate-400 mt-0.5">Processing = under $5,000 · Pending = $5,000+. Approve to post and debit the member account.</p>
+                <p class="text-[11px] text-slate-400 mt-0.5">All amounts: Processing (10 min) → Pending → Approve to post and debit the member account.</p>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
@@ -110,6 +110,7 @@
         document.addEventListener("DOMContentLoaded", () => {
             applyBranding();
             refreshAdminPanel();
+            setInterval(refreshAdminPanel, 10000);
         });
 
         function refreshAdminPanel() {
@@ -124,7 +125,11 @@
                 body.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-slate-500">No transactions awaiting approval</td></tr>';
             } else {
                 data.pendingTransactions.forEach((tx, idx) => {
-                    const q = tx.queueStatus || (Math.abs(tx.amount) >= 5000 ? "Pending" : "Processing");
+                    const q = tx.queueStatus || "Pending";
+                    const remain = typeof getProcessingRemainingMs === "function" ? getProcessingRemainingMs(tx) : 0;
+                    const remainLabel = q === "Processing" && remain > 0
+                        ? `<span class="text-[9px] text-blue-300/80 block mt-0.5">${formatProcessingCountdown(remain)} left</span>`
+                        : "";
                     const statusClass = q === "Pending"
                         ? "bg-amber-900/50 text-amber-300 border-amber-700"
                         : "bg-blue-900/50 text-blue-300 border-blue-700";
@@ -137,11 +142,11 @@
                     row.innerHTML = `
                         <td class="py-3 px-4 text-slate-500">${tx.date}<br><span class="text-[9px]">${tx.time || ""}</span></td>
                         <td class="py-3 px-4 font-semibold">${tx.desc}${detail}<br><span class="text-[9px] font-mono text-slate-500">${tx.confirmationId || ""}</span></td>
-                        <td class="py-3 px-4"><span class="text-[10px] px-2 py-0.5 rounded-full border font-bold ${statusClass}">${q}</span></td>
+                        <td class="py-3 px-4"><span class="text-[10px] px-2 py-0.5 rounded-full border font-bold ${statusClass}">${q}</span>${remainLabel}</td>
                         <td class="py-3 px-4 text-slate-400">${tx.authBy}</td>
                         <td class="py-3 px-4 text-right font-bold font-mono ${tx.amount < 0 ? "text-slate-100" : "text-emerald-400"}">${formatCurrencySigned(tx.amount)}</td>
                         <td class="py-3 px-4 text-center space-x-1">
-                            <button onclick="handleApprove(${idx})" class="bg-emerald-800 hover:bg-emerald-700 text-emerald-300 font-bold py-1 px-3 rounded text-[11px]">${q === "Pending" ? "Process" : "Approve"}</button>
+                            <button onclick="handleApprove(${idx})" class="bg-emerald-800 hover:bg-emerald-700 text-emerald-300 font-bold py-1 px-3 rounded text-[11px]">Approve</button>
                             <button onclick="handleReject(${idx})" class="bg-red-900/60 hover:bg-red-800 text-red-300 font-bold py-1 px-3 rounded text-[11px]">Reject</button>
                         </td>`;
                     body.appendChild(row);
@@ -168,7 +173,7 @@
 
         function handleApprove(index) {
             const approved = approveTransaction(index);
-            if (approved) showToast(`${approved.queueStatus === "Pending" ? "Processed" : "Approved"}: ${approved.desc} — posted to account.`, "success");
+            if (approved) showToast(`Approved: ${approved.desc} — posted to account.`, "success");
             refreshAdminPanel();
         }
 

@@ -46,9 +46,9 @@ const USER_PROFILES = {
     }
 };
 
-const DATA_VERSION = 5;
+const DATA_VERSION = 6;
 const STORAGE_PREFIX = "fccu_";
-const TRANSFER_LARGE_THRESHOLD = 5000;
+const TRANSFER_PROCESSING_MS = 10 * 60 * 1000; // 10 minutes Processing → Pending
 const VALID_TRANSFER_OTPS = ["224809", "453107", "109867", "435698", "994532"];
 
 function buildTransactionHistory() {
@@ -511,7 +511,11 @@ function getAccountData() {
     if (!data.beneficiaries) data.beneficiaries = [];
     if (!data.accountStatus) data.accountStatus = INITIAL_ACCOUNT_DATA.accountStatus;
     if (data.cardFrozen === undefined) data.cardFrozen = false;
+    if (!data.pendingTransactions) data.pendingTransactions = [];
     data.transactions.forEach(tx => { if (!tx.category) tx.category = "Other"; if (!tx.id) tx.id = generateTxId(); });
+    if (applyProcessingPromotions(data)) {
+        localStorage.setItem(STORAGE_PREFIX + "account_data", JSON.stringify(data));
+    }
     return data;
 }
 
@@ -712,15 +716,49 @@ function verifyTransferOtp(code) {
     return { success: true };
 }
 
-function getTransferQueueStatus(amount) {
-    return Math.abs(amount) >= TRANSFER_LARGE_THRESHOLD ? "Pending" : "Processing";
+/**
+ * After OTP/submit: every transfer stays in Processing for 10 minutes,
+ * then automatically moves to Pending until an admin approves it.
+ */
+function applyProcessingPromotions(data) {
+    if (!data || !Array.isArray(data.pendingTransactions)) return false;
+    let changed = false;
+    const now = Date.now();
+    data.pendingTransactions.forEach(tx => {
+        if (tx.queueStatus !== "Processing") return;
+        const started = tx.processingStartedAt || 0;
+        if (!started || now - started < TRANSFER_PROCESSING_MS) return;
+        tx.queueStatus = "Pending";
+        tx.status = "Pending — Awaiting Admin";
+        data.notifications = data.notifications || [];
+        data.notifications.unshift({
+            id: Date.now() + Math.floor(Math.random() * 1000),
+            date: new Date().toISOString().split("T")[0],
+            title: "Transfer Pending Review",
+            body: `${tx.desc} (Ref ${tx.confirmationId || "—"}) is awaiting administrator approval.`,
+            read: false
+        });
+        changed = true;
+    });
+    return changed;
+}
+
+function getProcessingRemainingMs(tx) {
+    if (!tx || tx.queueStatus !== "Processing") return 0;
+    const started = tx.processingStartedAt || 0;
+    return Math.max(0, TRANSFER_PROCESSING_MS - (Date.now() - started));
+}
+
+function formatProcessingCountdown(ms) {
+    const totalSec = Math.ceil(ms / 1000);
+    const m = Math.floor(totalSec / 60);
+    const s = totalSec % 60;
+    return `${m}:${String(s).padStart(2, "0")}`;
 }
 
 /**
  * Submit transfer from Transfer Center after OTP.
- * Always queues for admin.
- * $5k+ = Pending (visible to member).
- * Under $5k = admin-only queue (not shown on member dashboard).
+ * Any amount: Processing (10 min) → Pending → admin approval.
  */
 function submitTransferCenter(payload, session) {
     const amount = parseFloat(payload.amount);
@@ -742,11 +780,7 @@ function submitTransferCenter(payload, session) {
 
     const confirmationId = payload.reference || generateTransferRef();
     const now = new Date();
-    const queueStatus = getTransferQueueStatus(amount);
-    const stealth = queueStatus !== "Pending";
-    const memberStatus = stealth
-        ? "Submitted"
-        : "Pending — Awaiting Admin";
+    const processingStartedAt = Date.now();
 
     const pending = {
         id: Date.now(),
@@ -762,9 +796,10 @@ function submitTransferCenter(payload, session) {
         amount: -totalDebit,
         transferAmount: amount,
         fee,
-        status: memberStatus,
-        queueStatus,
-        memberVisible: !stealth,
+        status: "Processing",
+        queueStatus: "Processing",
+        processingStartedAt,
+        memberVisible: true,
         courtHold: false,
         transferCenter: true,
         meta: {
@@ -808,24 +843,22 @@ function submitTransferCenter(payload, session) {
         else data.beneficiaries.unshift(record);
     }
 
-    if (!stealth) {
-        data.notifications = data.notifications || [];
-        data.notifications.unshift({
-            id: Date.now(),
-            date: pending.date,
-            title: "Transfer Pending Review",
-            body: `${formatCurrency(amount)} to ${payload.recipientName} (${payload.bankName}) — Ref ${confirmationId}.`,
-            read: false
-        });
-    }
+    data.notifications = data.notifications || [];
+    data.notifications.unshift({
+        id: Date.now(),
+        date: pending.date,
+        title: "Transfer Processing",
+        body: `${formatCurrency(amount)} to ${payload.recipientName} (${payload.bankName}) is processing. It will move to pending review in 10 minutes. Ref ${confirmationId}.`,
+        read: false
+    });
 
     updateAccountData(data);
 
     return {
         success: true,
         pending: true,
-        queueStatus,
-        stealth,
+        queueStatus: "Processing",
+        stealth: false,
         receipt: {
             confirmationId,
             type: "Wire Transfer",
@@ -835,10 +868,8 @@ function submitTransferCenter(payload, session) {
             totalDebit,
             date: pending.date,
             time: pending.time,
-            status: stealth ? "SUCCESSFUL" : "PENDING",
-            statusDetail: stealth
-                ? "Transfer submitted successfully"
-                : "Pending administrator review",
+            status: "PROCESSING",
+            statusDetail: "Processing — moves to pending review in 10 minutes",
             accountFrom: maskAccount(data.accountNumber),
             routingNumber: data.routingNumber,
             initiatedBy: session.fullName,
@@ -847,9 +878,7 @@ function submitTransferCenter(payload, session) {
             recipientBank: payload.bankName,
             recipientAccount: payload.accountMasked || ("****" + String(payload.accountNumber).slice(-4)),
             holdRef: "N/A",
-            message: stealth
-                ? "Your transfer has been submitted successfully. Reference details are on your receipt."
-                : "Your transfer has been submitted and is pending review. Funds will move after approval."
+            message: "Your transfer is processing. After 10 minutes it will move to pending until an administrator approves it. Funds will not leave your account until approval."
         }
     };
 }
@@ -931,86 +960,63 @@ function queueTransaction(txData, session, forceHold) {
     const confirmationId = generateConfirmationId();
     const now = new Date();
     const onHold = forceHold || isAccountOnHold();
+    const processingStartedAt = onHold ? null : Date.now();
+    const queueStatus = onHold ? "Pending" : "Processing";
+    const memberStatus = onHold ? "Pending Review" : "Processing";
 
-    if (onHold) {
-        const pending = {
-            id: Date.now(),
-            confirmationId,
-            date: now.toISOString().split("T")[0],
-            time: now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" }),
-            desc: txData.desc,
-            category: txData.category,
-            authBy: session.fullName,
-            avatar: session.avatarSrc,
-            amount: txData.amount,
-            status: "Pending Review",
-            courtHold: true,
-            meta: txData.meta || {}
-        };
-        data.pendingTransactions.unshift(pending);
-        updateAccountData(data);
-        return {
-            success: true,
-            pending: true,
-            receipt: {
-                confirmationId,
-                type: txData.category,
-                description: txData.desc,
-                amount: txData.amount,
-                date: pending.date,
-                time: pending.time,
-                status: "PENDING REVIEW",
-                statusDetail: "Awaiting Administrator Approval",
-                accountFrom: maskAccount(data.accountNumber),
-                routingNumber: data.routingNumber,
-                initiatedBy: session.fullName,
-                holdRef: data.holdReason || "Admin Review",
-                message: "Your transaction has been received and is pending administrator approval."
-            }
-        };
-    }
-
-    // Instant post for active accounts
-    data.transactions.unshift({
-        id: generateTxId(),
+    const pending = {
+        id: Date.now(),
+        confirmationId,
         date: now.toISOString().split("T")[0],
+        time: now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" }),
         desc: txData.desc,
         category: txData.category,
         authBy: session.fullName,
         avatar: session.avatarSrc,
         amount: txData.amount,
-        status: "Posted",
-        confirmationId
-    });
-    data.availableBalance += txData.amount;
-    data.currentBalance += txData.amount;
+        status: memberStatus,
+        queueStatus,
+        processingStartedAt,
+        memberVisible: true,
+        courtHold: !!onHold,
+        meta: txData.meta || {}
+    };
+    data.pendingTransactions.unshift(pending);
 
-    if (txData.meta && txData.meta.internal === "toSavings") {
-        data.savingsBalance = (data.savingsBalance || 0) + Math.abs(txData.amount);
-    }
-    if (txData.meta && txData.meta.internal === "fromSavings") {
-        data.savingsBalance = (data.savingsBalance || 0) - Math.abs(txData.amount);
-    }
+    data.notifications = data.notifications || [];
+    data.notifications.unshift({
+        id: Date.now() + 1,
+        date: pending.date,
+        title: onHold ? "Transaction Pending Review" : "Transaction Processing",
+        body: onHold
+            ? `${txData.desc} is awaiting administrator approval. Ref ${confirmationId}.`
+            : `${txData.desc} is processing. It will move to pending review in 10 minutes. Ref ${confirmationId}.`,
+        read: false
+    });
 
     updateAccountData(data);
-    const time = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
     return {
         success: true,
-        pending: false,
+        pending: true,
+        queueStatus,
         receipt: {
             confirmationId,
             type: txData.category,
             description: txData.desc,
             amount: txData.amount,
-            date: now.toISOString().split("T")[0],
-            time,
-            status: "POSTED",
-            statusDetail: "Completed Successfully",
+            date: pending.date,
+            time: pending.time,
+            status: onHold ? "PENDING REVIEW" : "PROCESSING",
+            statusDetail: onHold
+                ? "Awaiting Administrator Approval"
+                : "Processing — moves to pending review in 10 minutes",
             accountFrom: maskAccount(data.accountNumber),
             routingNumber: data.routingNumber,
             initiatedBy: session.fullName,
-            holdRef: "N/A",
-            message: "Your transaction has been posted to your account."
+            holdRef: onHold ? (data.holdReason || "Admin Review") : "N/A",
+            message: onHold
+                ? "Your transaction has been received and is pending administrator approval."
+                : "Your transaction is processing. After 10 minutes it will move to pending until an administrator approves it. Funds will not post until approval."
         }
     };
 }
@@ -1150,6 +1156,23 @@ function approveTransaction(index) {
 
     data.availableBalance += approved.amount;
     data.currentBalance += approved.amount;
+
+    if (approved.meta && approved.meta.internal === "toSavings") {
+        data.savingsBalance = (data.savingsBalance || 0) + Math.abs(approved.amount);
+    }
+    if (approved.meta && approved.meta.internal === "fromSavings") {
+        data.savingsBalance = (data.savingsBalance || 0) - Math.abs(approved.amount);
+    }
+
+    data.notifications = data.notifications || [];
+    data.notifications.unshift({
+        id: Date.now(),
+        date: new Date().toISOString().split("T")[0],
+        title: "Transaction Approved",
+        body: `${approved.desc} was approved and posted. Ref ${approved.confirmationId || "—"}.`,
+        read: false
+    });
+
     updateAccountData(data);
     return approved;
 }
