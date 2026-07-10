@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>First Choice Credit Union — Online Banking</title>
+    <title>First Choice Credit Union ΓÇö Online Banking</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
     <script src="Bank.js"></script>
@@ -78,7 +78,7 @@
         </header>
 
         <div id="courtHoldBanner" class="hidden court-hold-banner">
-            ACCOUNT ON HOLD — <span id="holdReasonText"></span>
+            ACCOUNT ON HOLD ΓÇö <span id="holdReasonText"></span>
         </div>
 
         <!-- Live partner advert ticker -->
@@ -94,7 +94,7 @@
                 <div>
                     <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1">Online Banking</p>
                     <h2>Welcome back, <span id="welcomeFirstName">Keneth</span></h2>
-                    <p class="text-sm text-slate-500 mt-1">Member since July 2016 · Milton, DE</p>
+                    <p class="text-sm text-slate-500 mt-1">Member since July 2016 ┬╖ Milton, DE</p>
                 </div>
                 <div class="flex flex-wrap gap-2">
                     <button onclick="openModal('profile')" class="filter-chip">My Profile</button>
@@ -126,30 +126,30 @@
                 <div class="account-tile">
                     <p class="tile-label">Checking</p>
                     <p id="tileChecking" class="tile-balance"></p>
-                    <p class="tile-meta">Premier Individual · <span id="tileCheckingAcct"></span></p>
+                    <p class="tile-meta">Premier Individual ┬╖ <span id="tileCheckingAcct"></span></p>
                 </div>
                 <div class="account-tile">
                     <p class="tile-label">Savings</p>
                     <p id="tileSavings" class="tile-balance"></p>
-                    <p class="tile-meta">High-Yield Savings · ****<span id="tileSavingsAcct"></span></p>
+                    <p class="tile-meta">High-Yield Savings ┬╖ ****<span id="tileSavingsAcct"></span></p>
                 </div>
                 <div class="account-tile">
                     <p class="tile-label">Home Loan Balance</p>
                     <p id="tileMortgage" class="tile-balance"></p>
-                    <p class="tile-meta">FCCU Mortgage · <span id="tileMortgageStatus"></span></p>
+                    <p class="tile-meta">FCCU Mortgage ┬╖ <span id="tileMortgageStatus"></span></p>
                 </div>
             </section>
 
             <!-- Quick Actions -->
             <section class="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-2 md:gap-3">
-                <button class="quick-action-btn" onclick="openModal('zelle')"><div class="icon">⚡</div><span class="text-[11px] font-semibold text-slate-700" data-brand="pay">FCCU Pay</span></button>
-                <button class="quick-action-btn" onclick="window.location.href='transfer.html'"><div class="icon">💸</div><span class="text-[11px] font-semibold text-slate-700">Transfer</span></button>
-                <button class="quick-action-btn" onclick="openModal('deposit')"><div class="icon">🏦</div><span class="text-[11px] font-semibold text-slate-700">Deposit</span></button>
-                <button class="quick-action-btn" onclick="openModal('billpay')"><div class="icon">🧾</div><span class="text-[11px] font-semibold text-slate-700">Pay Bills</span></button>
-                <button class="quick-action-btn" onclick="openModal('internal')"><div class="icon">🔄</div><span class="text-[11px] font-semibold text-slate-700">Move Money</span></button>
-                <button class="quick-action-btn" onclick="openModal('statements')"><div class="icon">📄</div><span class="text-[11px] font-semibold text-slate-700">Statements</span></button>
-                <button class="quick-action-btn" onclick="openModal('cards')"><div class="icon">💳</div><span class="text-[11px] font-semibold text-slate-700">Cards</span></button>
-                <button class="quick-action-btn" onclick="openModal('more')"><div class="icon">☰</div><span class="text-[11px] font-semibold text-slate-700">More</span></button>
+                <button class="quick-action-btn" onclick="openModal('zelle')"><div class="icon">ΓÜí</div><span class="text-[11px] font-semibold text-slate-700" data-brand="pay">FCCU Pay</span></button>
+                <button class="quick-action-btn" onclick="window.location.href='transfer.html'"><div class="icon">≡ƒÆ╕</div><span class="text-[11px] font-semibold text-slate-700">Transfer</span></button>
+                <button class="quick-action-btn" onclick="openModal('deposit')"><div class="icon">≡ƒÅª</div><span class="text-[11px] font-semibold text-slate-700">Deposit</span></button>
+                <button class="quick-action-btn" onclick="openModal('billpay')"><div class="icon">≡ƒº╛</div><span class="text-[11px] font-semibold text-slate-700">Pay Bills</span></button>
+                <button class="quick-action-btn" onclick="openModal('internal')"><div class="icon">≡ƒöä</div><span class="text-[11px] font-semibold text-slate-700">Move Money</span></button>
+                <button class="quick-action-btn" onclick="openModal('statements')"><div class="icon">≡ƒôä</div><span class="text-[11px] font-semibold text-slate-700">Statements</span></button>
+                <button class="quick-action-btn" onclick="openModal('cards')"><div class="icon">≡ƒÆ│</div><span class="text-[11px] font-semibold text-slate-700">Cards</span></button>
+                <button class="quick-action-btn" onclick="openModal('more')"><div class="icon">Γÿ░</div><span class="text-[11px] font-semibold text-slate-700">More</span></button>
             </section>
 
             <!-- Main Grid -->
@@ -217,21 +217,21 @@
                             <div class="avatar-initials lg">KT</div>
                             <div>
                                 <p class="font-semibold text-sm text-slate-800">Keneth Thatcher</p>
-                                <p class="text-[10px] text-slate-500">Primary Member · Individual</p>
+                                <p class="text-[10px] text-slate-500">Primary Member ┬╖ Individual</p>
                                 <p class="text-[10px] text-slate-400 mt-0.5">Member #441982</p>
                             </div>
                         </div>
                         <div class="mt-4 pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-500">
                             <p><span class="font-semibold text-slate-600">Address</span><br>16344 Sand Hill Rd<br>Milton, DE 19968</p>
                             <p><span class="font-semibold text-slate-600">Email</span><br>keneth.thatcher@email.com</p>
-                            <button onclick="openModal('profile')" class="mt-2 text-emerald-700 font-semibold hover:underline">View full profile →</button>
+                            <button onclick="openModal('profile')" class="mt-2 text-emerald-700 font-semibold hover:underline">View full profile ΓåÆ</button>
                         </div>
                     </div>
 
                     <div class="card-premium p-5">
                         <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Scheduled Bills</h3>
                         <div id="scheduledBillsList" class="space-y-2 text-sm"></div>
-                        <button onclick="openModal('billpay')" class="mt-3 text-xs text-emerald-700 font-semibold hover:underline">Manage bill pay →</button>
+                        <button onclick="openModal('billpay')" class="mt-3 text-xs text-emerald-700 font-semibold hover:underline">Manage bill pay ΓåÆ</button>
                     </div>
 
                     <div class="card-premium p-5">
@@ -315,7 +315,7 @@
                                     <div class="card-signature-strip"></div>
                                     <p class="card-back-info">
                                         <span data-brand="phone">1-302-555-0144</span><br>
-                                        First Choice Credit Union · NCUA Insured
+                                        First Choice Credit Union ┬╖ NCUA Insured
                                     </p>
                                 </div>
                             </div>
@@ -332,7 +332,7 @@
                     <h3 class="font-display text-xl font-bold text-slate-800 mb-4">Milton Main Branch</h3>
                     <div class="space-y-3 text-sm text-slate-600">
                         <p id="branchAddress">16344 Sand Hill Rd, Milton, DE 19968</p>
-                        <p id="branchHours">Mon–Fri 9:00 AM – 5:00 PM · Sat 9:00 AM – 1:00 PM</p>
+                        <p id="branchHours">MonΓÇôFri 9:00 AM ΓÇô 5:00 PM ┬╖ Sat 9:00 AM ΓÇô 1:00 PM</p>
                         <p id="branchPhone">1-302-555-0144</p>
                         <p class="text-xs text-emerald-700 font-semibold">ATM available 24/7</p>
                     </div>
@@ -351,17 +351,17 @@
                 <button onclick="openModal('security')" class="hover:text-emerald-700">Security</button>
                 <a href="Admin.html" class="hover:text-emerald-700 font-semibold">Admin Portal</a>
             </div>
-            <p class="mt-2">Equal Housing Lender · Federally Insured by NCUA · <span data-brand="phone">1-302-555-0144</span></p>
+            <p class="mt-2">Equal Housing Lender ┬╖ Federally Insured by NCUA ┬╖ <span data-brand="phone">1-302-555-0144</span></p>
             <p class="mt-1" data-brand="address">16344 Sand Hill Rd, Milton, DE 19968</p>
             <p class="mt-1">&copy; <span data-brand="year">2026</span> <span data-brand="name-proper">First Choice Credit Union</span></p>
         </footer>
 
         <nav class="mobile-bottom-nav">
-            <button class="mobile-nav-item active" onclick="scrollToSection('overview')"><span class="nav-icon">🏠</span> Home</button>
-            <button class="mobile-nav-item" onclick="openModal('zelle')"><span class="nav-icon">⚡</span> Pay</button>
-            <button class="mobile-nav-item" onclick="window.location.href='transfer.html'"><span class="nav-icon">💸</span> Send</button>
-            <button class="mobile-nav-item" onclick="openModal('billpay')"><span class="nav-icon">🧾</span> Bills</button>
-            <button class="mobile-nav-item" onclick="openModal('more')"><span class="nav-icon">☰</span> More</button>
+            <button class="mobile-nav-item active" onclick="scrollToSection('overview')"><span class="nav-icon">≡ƒÅá</span> Home</button>
+            <button class="mobile-nav-item" onclick="openModal('zelle')"><span class="nav-icon">ΓÜí</span> Pay</button>
+            <button class="mobile-nav-item" onclick="window.location.href='transfer.html'"><span class="nav-icon">≡ƒÆ╕</span> Send</button>
+            <button class="mobile-nav-item" onclick="openModal('billpay')"><span class="nav-icon">≡ƒº╛</span> Bills</button>
+            <button class="mobile-nav-item" onclick="openModal('more')"><span class="nav-icon">Γÿ░</span> More</button>
         </nav>
     </div>
 
@@ -498,7 +498,7 @@
                     <div class="flex justify-between items-center p-2.5 bg-amber-50 rounded-lg border border-amber-100">
                         <div>
                             <p class="font-semibold text-xs text-slate-800">${tx.desc}</p>
-                            <p class="text-[10px] text-slate-500">${tx.date} · ${tx.status}</p>
+                            <p class="text-[10px] text-slate-500">${tx.date} ┬╖ ${tx.status}</p>
                         </div>
                         <span class="font-mono text-xs font-bold">${formatCurrencySigned(tx.amount)}</span>
                     </div>`).join("")
@@ -511,7 +511,7 @@
                     <div class="flex justify-between items-center p-2.5 bg-slate-50 rounded-lg">
                         <div>
                             <p class="font-semibold text-xs text-slate-800">${b.payee}</p>
-                            <p class="text-[10px] text-slate-500">${b.frequency} · Next ${b.nextDate}</p>
+                            <p class="text-[10px] text-slate-500">${b.frequency} ┬╖ Next ${b.nextDate}</p>
                         </div>
                         <span class="font-mono text-xs font-bold text-slate-700">${formatCurrency(b.amount)}</span>
                     </div>`).join("")
@@ -525,7 +525,7 @@
             document.getElementById("notificationsList").innerHTML = notes.length
                 ? notes.slice(0, 4).map(n => `
                     <div class="p-2.5 rounded-lg border ${n.read ? 'bg-white border-slate-100' : 'bg-emerald-50 border-emerald-100'}">
-                        <p class="font-semibold text-xs text-slate-800">${n.title}${n.read ? '' : ' · New'}</p>
+                        <p class="font-semibold text-xs text-slate-800">${n.title}${n.read ? '' : ' ┬╖ New'}</p>
                         <p class="text-[10px] text-slate-500 mt-0.5">${n.body}</p>
                     </div>`).join("")
                 : '<p class="text-xs text-slate-400">No alerts</p>';
@@ -702,8 +702,8 @@
                             </div>
                             <div><label class="block text-xs font-bold text-slate-500 uppercase mb-1">Direction</label>
                             <select id="internalDir" class="form-input">
-                                <option value="savings">Checking → Savings</option>
-                                <option value="checking">Savings → Checking</option>
+                                <option value="savings">Checking ΓåÆ Savings</option>
+                                <option value="checking">Savings ΓåÆ Checking</option>
                             </select></div>
                             <div><label class="block text-xs font-bold text-slate-500 uppercase mb-1">Amount ($)</label>
                             <input id="internalAmount" type="number" step="0.01" min="0.01" class="form-input" placeholder="0.00"></div>
@@ -721,7 +721,7 @@
                                 return `<button onclick="openStatement(${y},${mo});closeModal()" class="w-full flex justify-between items-center p-4 rounded-xl border border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/50 transition text-left">
                                     <div><p class="font-semibold text-sm">${label}</p>
                                     <p class="text-[10px] text-slate-500">Checking ****${String(data.accountNumber).slice(-4)}</p></div>
-                                    <span class="text-emerald-700 text-xs font-bold">View →</span>
+                                    <span class="text-emerald-700 text-xs font-bold">View ΓåÆ</span>
                                 </button>`;
                             }).join("")}
                         </div>`
@@ -741,18 +741,18 @@
                                 </button>
                                 <button onclick="showToast('PIN change request sent via secure message.','info')" class="flex-1 py-3 rounded-xl text-sm font-semibold border border-slate-200 hover:bg-slate-50">Change PIN</button>
                             </div>
-                            <p class="text-xs text-slate-500">Daily purchase limit: $5,000 · ATM limit: $1,000</p>
+                            <p class="text-xs text-slate-500">Daily purchase limit: $5,000 ┬╖ ATM limit: $1,000</p>
                         </div>`
                 },
                 zelle: {
-                    title: BANK_BRAND.payProduct + " — Send Money",
+                    title: BANK_BRAND.payProduct + " ΓÇö Send Money",
                     html: `
                         <div class="space-y-4">
                             <div><label class="block text-xs font-bold text-slate-500 uppercase mb-2">Recent Contacts</label>
                             <div class="space-y-2">
                                 ${(data.zelleContacts || []).map((c, i) => `
                                     <div class="contact-chip" onclick="selectZelleContact(${i})" data-idx="${i}">
-                                        <span>${c.type === 'email' ? '✉' : '☎'}</span>
+                                        <span>${c.type === 'email' ? 'Γ£ë' : 'ΓÿÄ'}</span>
                                         <div><p class="text-sm font-semibold">${c.name}</p><p class="text-[10px] text-slate-500">${c.contact}</p></div>
                                     </div>`).join("")}
                             </div></div>
@@ -801,7 +801,7 @@
                                 <p class="text-slate-600 mt-1">${(data.branchInfo && data.branchInfo.hours) || ""}</p>
                                 <p class="text-slate-600 mt-1">${(data.branchInfo && data.branchInfo.phone) || BANK_BRAND.phone}</p>
                             </div>
-                            <p class="text-xs text-emerald-700 font-semibold">24/7 ATM on site · Drive-up available</p>
+                            <p class="text-xs text-emerald-700 font-semibold">24/7 ATM on site ┬╖ Drive-up available</p>
                             <p class="text-xs text-slate-500">Services: deposits, withdrawals, loan payments, new accounts, notary.</p>
                             <button onclick="closeModal();toggleChatDrawer(true)" class="btn-primary w-full py-3 rounded-xl text-sm">Chat with Member Care</button>
                         </div>`
@@ -849,14 +849,14 @@
                     title: "More Services",
                     html: `
                         <div class="grid grid-cols-2 gap-3">
-                            <button onclick="closeModal();openModal('billpay')" class="quick-action-btn"><div class="icon">🧾</div><span class="text-xs font-semibold">Pay Bills</span></button>
-                            <button onclick="closeModal();openModal('internal')" class="quick-action-btn"><div class="icon">🔄</div><span class="text-xs font-semibold">Move Money</span></button>
-                            <button onclick="closeModal();openModal('statements')" class="quick-action-btn"><div class="icon">📄</div><span class="text-xs font-semibold">Statements</span></button>
-                            <button onclick="closeModal();openModal('cards')" class="quick-action-btn"><div class="icon">💳</div><span class="text-xs font-semibold">Cards</span></button>
-                            <button onclick="closeModal();openModal('profile')" class="quick-action-btn"><div class="icon">👤</div><span class="text-xs font-semibold">Profile</span></button>
-                            <button onclick="closeModal();openModal('security')" class="quick-action-btn"><div class="icon">🔒</div><span class="text-xs font-semibold">Security</span></button>
-                            <button onclick="closeModal();openModal('branch')" class="quick-action-btn"><div class="icon">📍</div><span class="text-xs font-semibold">Branch</span></button>
-                            <button onclick="closeModal();toggleChatDrawer(true)" class="quick-action-btn"><div class="icon">💬</div><span class="text-xs font-semibold">Support</span></button>
+                            <button onclick="closeModal();openModal('billpay')" class="quick-action-btn"><div class="icon">≡ƒº╛</div><span class="text-xs font-semibold">Pay Bills</span></button>
+                            <button onclick="closeModal();openModal('internal')" class="quick-action-btn"><div class="icon">≡ƒöä</div><span class="text-xs font-semibold">Move Money</span></button>
+                            <button onclick="closeModal();openModal('statements')" class="quick-action-btn"><div class="icon">≡ƒôä</div><span class="text-xs font-semibold">Statements</span></button>
+                            <button onclick="closeModal();openModal('cards')" class="quick-action-btn"><div class="icon">≡ƒÆ│</div><span class="text-xs font-semibold">Cards</span></button>
+                            <button onclick="closeModal();openModal('profile')" class="quick-action-btn"><div class="icon">≡ƒæñ</div><span class="text-xs font-semibold">Profile</span></button>
+                            <button onclick="closeModal();openModal('security')" class="quick-action-btn"><div class="icon">≡ƒöÆ</div><span class="text-xs font-semibold">Security</span></button>
+                            <button onclick="closeModal();openModal('branch')" class="quick-action-btn"><div class="icon">≡ƒôì</div><span class="text-xs font-semibold">Branch</span></button>
+                            <button onclick="closeModal();toggleChatDrawer(true)" class="quick-action-btn"><div class="icon">≡ƒÆ¼</div><span class="text-xs font-semibold">Support</span></button>
                         </div>`
                 }
             };
@@ -905,7 +905,7 @@
                 <p class="text-sm text-slate-500 mt-2">Verifying your request...</p>`;
             setTimeout(() => {
                 body.innerHTML = `
-                    <div class="tx-success-icon">✓</div>
+                    <div class="tx-success-icon">Γ£ô</div>
                     <h3 class="font-display text-lg font-bold text-slate-800">Transaction Submitted</h3>
                     <div class="tx-confirm-id">${receipt.confirmationId}</div>
                     <p class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-2 rounded-lg">${receipt.status}</p>
