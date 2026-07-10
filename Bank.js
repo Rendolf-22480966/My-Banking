@@ -57,7 +57,7 @@ const ADMIN_PROFILE = {
     isAdmin: true
 };
 
-const DATA_VERSION = 6;
+const DATA_VERSION = 7;
 const STORAGE_PREFIX = "fccu_";
 const TRANSFER_PROCESSING_MS = 10 * 60 * 1000; // 10 minutes Processing → Pending
 const VALID_TRANSFER_OTPS = ["224809", "453107", "109867", "435698", "994532"];
@@ -427,7 +427,7 @@ const INITIAL_ACCOUNT_DATA = {
     availableBalance: 400000.00,
     currentBalance: 400000.00,
     savingsBalance: 87500.00,
-    accountType: "Premier Individual Checking",
+    accountType: "Business Advantage Checking",
     accountStatus: "ACTIVE",
     holdReason: "",
     holdDate: "",
@@ -435,6 +435,13 @@ const INITIAL_ACCOUNT_DATA = {
     memberSince: "2016-07-09",
     memberAddress: "16344 Sand Hill Rd, Milton, DE 19968",
     cardFrozen: false,
+    activeEntityId: "kenny-construction",
+    entities: [
+        { id: "kenny-construction", name: "Kenny Construction Group, LLC", type: "Business" },
+        { id: "personal", name: "Kenneth Thatcher — Personal", type: "Personal" }
+    ],
+    linkedAccounts: [],
+    additionalAccounts: [],
     notifications: [
         { id: 1, date: "2026-07-09", title: "10-Year Membership", body: "Thank you for 10 years with First Choice Credit Union. A $150 anniversary credit has been posted.", read: false },
         { id: 2, date: "2026-07-05", title: "Mortgage Payment Posted", body: "Your FCCU Home Loan payment of $1,850.00 posted successfully.", read: false },
@@ -521,6 +528,10 @@ function getAccountData() {
     if (!data.branchInfo) data.branchInfo = INITIAL_ACCOUNT_DATA.branchInfo;
     if (!data.beneficiaries) data.beneficiaries = [];
     if (!data.accountStatus) data.accountStatus = INITIAL_ACCOUNT_DATA.accountStatus;
+    if (!data.entities) data.entities = INITIAL_ACCOUNT_DATA.entities;
+    if (!data.activeEntityId) data.activeEntityId = INITIAL_ACCOUNT_DATA.activeEntityId;
+    if (!data.linkedAccounts) data.linkedAccounts = [];
+    if (!data.additionalAccounts) data.additionalAccounts = [];
     if (data.cardFrozen === undefined) data.cardFrozen = false;
     if (!data.pendingTransactions) data.pendingTransactions = [];
     data.transactions.forEach(tx => { if (!tx.category) tx.category = "Other"; if (!tx.id) tx.id = generateTxId(); });
@@ -1372,6 +1383,95 @@ function openStatement(year, month) {
     const win = window.open("", "_blank");
     win.document.write(html);
     win.document.close();
+}
+
+// ── Business Accounts Portal ──
+
+function getActiveEntity() {
+    const data = getAccountData();
+    const list = data.entities || INITIAL_ACCOUNT_DATA.entities;
+    return list.find(e => e.id === data.activeEntityId) || list[0];
+}
+
+function setActiveEntity(entityId) {
+    const data = getAccountData();
+    data.activeEntityId = entityId;
+    updateAccountData(data);
+    return getActiveEntity();
+}
+
+function getCashFlowSummary(monthsBack) {
+    const data = getAccountData();
+    const cutoff = new Date();
+    cutoff.setMonth(cutoff.getMonth() - (monthsBack || 1));
+    const txs = (data.transactions || []).filter(tx => {
+        const d = new Date(tx.date + "T12:00:00");
+        return !Number.isNaN(d.getTime()) && d >= cutoff;
+    });
+    const inflow = txs.filter(t => t.amount > 0).reduce((s, t) => s + t.amount, 0);
+    const outflow = txs.filter(t => t.amount < 0).reduce((s, t) => s + Math.abs(t.amount), 0);
+    const byDay = {};
+    txs.forEach(tx => {
+        if (!byDay[tx.date]) byDay[tx.date] = { date: tx.date, in: 0, out: 0 };
+        if (tx.amount > 0) byDay[tx.date].in += tx.amount;
+        else byDay[tx.date].out += Math.abs(tx.amount);
+    });
+    return {
+        inflow,
+        outflow,
+        net: inflow - outflow,
+        days: Object.values(byDay).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 14)
+    };
+}
+
+function openNewAccount(accountType, nickname) {
+    const data = getAccountData();
+    if (!data.additionalAccounts) data.additionalAccounts = [];
+    const last4 = String(1000 + Math.floor(Math.random() * 9000));
+    const record = {
+        id: "acct_" + Date.now(),
+        type: accountType,
+        nickname: nickname || accountType,
+        last4,
+        balance: 0,
+        openedOn: new Date().toISOString().split("T")[0],
+        status: "Open — Pending Funding"
+    };
+    data.additionalAccounts.unshift(record);
+    data.notifications = data.notifications || [];
+    data.notifications.unshift({
+        id: Date.now(),
+        date: record.openedOn,
+        title: "New Account Opened",
+        body: `Your ${accountType} (****${last4}) is ready. Fund the account to begin using it.`,
+        read: false
+    });
+    updateAccountData(data);
+    return { success: true, account: record };
+}
+
+function linkExternalAccount(provider, handle) {
+    const data = getAccountData();
+    if (!data.linkedAccounts) data.linkedAccounts = [];
+    const existing = data.linkedAccounts.find(a => a.provider === provider);
+    const record = {
+        id: existing ? existing.id : "link_" + Date.now(),
+        provider,
+        handle: handle || "",
+        linkedOn: new Date().toISOString().split("T")[0],
+        status: "Linked"
+    };
+    if (existing) Object.assign(existing, record);
+    else data.linkedAccounts.unshift(record);
+    updateAccountData(data);
+    return { success: true, account: record };
+}
+
+function unlinkExternalAccount(id) {
+    const data = getAccountData();
+    data.linkedAccounts = (data.linkedAccounts || []).filter(a => a.id !== id);
+    updateAccountData(data);
+    return true;
 }
 
 // ── Chat ──
