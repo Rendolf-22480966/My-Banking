@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Choice Credit Union — Sign In</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="Bank.js"></script>
+    <script src="promos.js"></script>
+</head>
+<body class="login-photo-bg min-h-screen flex flex-col font-sans text-white" data-page="Sign In">
+
+    <header class="login-brand-header">
+        <img src="logo.svg" alt="First Choice Credit Union">
+        <div>
+            <div class="login-brand-name" data-brand="name">first choice credit union</div>
+            <span class="login-brand-stripe"></span>
+        </div>
+    </header>
+
+    <div class="login-tagline-overlay">
+        <h2>Banking built for real life</h2>
+        <p>Secure online access to your accounts, bill pay, transfers, deposits and statements.</p>
+    </div>
+
+    <div class="login-photo-layout flex-grow">
+        <div class="login-glass-card w-full max-w-md">
+            <div class="accent-bar"></div>
+            <div class="p-6 sm:p-8 text-slate-900">
+                <h3 class="font-display text-2xl font-bold text-slate-800 mb-1">Sign In</h3>
+                <p class="text-sm text-slate-500 mb-6">Access your secure online banking</p>
+                <p class="text-[11px] text-slate-400 mb-4 bg-slate-50 border border-slate-100 rounded-lg p-2.5">Demo login: <strong>keneth_thatcher</strong> / <strong>password123</strong></p>
+
+                <form id="loginForm" class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Username</label>
+                        <input id="username" type="text" autocomplete="username" autofocus required class="form-input" placeholder="Enter your username">
+                    </div>
+                    <div class="relative">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Password</label>
+                        <input id="password" type="password" autocomplete="current-password" required class="form-input pr-16" placeholder="Enter your password">
+                        <button type="button" onclick="togglePasswordVisibility(event)" class="absolute right-3 bottom-2.5 text-xs font-semibold text-slate-600 hover:text-slate-900">Show</button>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <label class="flex items-center gap-2 text-slate-600 cursor-pointer">
+                            <input type="checkbox" class="rounded text-slate-800 focus:ring-slate-800">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="text-xs font-medium hover:underline" style="color:var(--accent)">Forgot password?</a>
+                    </div>
+                    <button id="signInBtn" type="button" onclick="handleLoginSubmit(event)" class="btn-nr w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
+                        <span id="btnText">Sign In</span>
+                        <span id="btnSpinner" class="hidden animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="errorModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-sm shadow-2xl p-6 text-center text-slate-900">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style="background:#EFF6FF">
+                <span class="text-xl" style="color:var(--accent)">!</span>
+            </div>
+            <h3 class="text-lg font-bold mb-2">Unable to Sign In</h3>
+            <p class="text-sm text-slate-600 mb-6">Please check your username and password and try again.</p>
+            <button onclick="closeErrorModal()" class="btn-nr w-full py-3 rounded-xl text-sm">Try Again</button>
+        </div>
+    </div>
+
+    <footer class="w-full text-center text-[10px] text-white/50 p-4 z-10 space-y-1">
+        <p>Equal Housing Lender &nbsp;|&nbsp; Federally Insured by NCUA</p>
+        <p data-brand="address">16344 Sand Hill Rd, Milton, DE 19968</p>
+        <p>&copy; <span data-brand="year">2026</span> <span data-brand="name-proper">First Choice Credit Union</span></p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            applyBranding();
+            document.getElementById("username").focus();
+            document.getElementById("loginForm").addEventListener("submit", handleLoginSubmit);
+        });
+
+        function togglePasswordVisibility(event) {
+            const passInput = document.getElementById("password");
+            if (passInput.type === "password") {
+                passInput.type = "text";
+                event.target.textContent = "Hide";
+            } else {
+                passInput.type = "password";
+                event.target.textContent = "Show";
+            }
+        }
+
+        function handleLoginSubmit(event) {
+            event.preventDefault();
+            const u = document.getElementById("username").value;
+            const p = document.getElementById("password").value;
+            const btnText = document.getElementById("btnText");
+            const btnSpinner = document.getElementById("btnSpinner");
+            const signInBtn = document.getElementById("signInBtn");
+
+            btnText.textContent = "Signing in...";
+            btnSpinner.classList.remove("hidden");
+            signInBtn.disabled = true;
+
+            setTimeout(() => {
+                const res = authenticateUser(u, p);
+                if (res.success) {
+                    window.location.href = "Index.html";
+                } else {
+                    btnText.textContent = "Sign In";
+                    btnSpinner.classList.add("hidden");
+                    signInBtn.disabled = false;
+                    document.getElementById("errorModal").classList.remove("hidden");
+                }
+            }, 1000);
+        }
+
+        function closeErrorModal() {
+            document.getElementById("errorModal").classList.add("hidden");
+            document.getElementById("password").value = "";
+            document.getElementById("password").focus();
+        }
+    </script>
+</body>
+</html>
