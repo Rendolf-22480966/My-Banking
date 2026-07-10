@@ -30,10 +30,10 @@ const BANK_BRAND = {
 const BANK_INFO = BANK_BRAND;
 
 const USER_PROFILES = {
-    keneth_thatcher: {
-        username: "keneth_thatcher",
+    kenneth_thatcher: {
+        username: "kenneth_thatcher",
         password: "password123",
-        fullName: "Keneth Thatcher",
+        fullName: "Kenneth Thatcher",
         role: "Primary Member",
         avatarSrc: "initials",
         initials: "KT",
@@ -41,18 +41,18 @@ const USER_PROFILES = {
         cardExpiry: "09/28",
         cardCvv: "419",
         memberSince: "2016-07-09",
-        email: "keneth.thatcher@email.com",
+        email: "kenneth.thatcher@email.com",
         phone: "(302) 555-0198"
     }
 };
 
-const DATA_VERSION = 4;
+const DATA_VERSION = 5;
 const STORAGE_PREFIX = "fccu_";
 const TRANSFER_LARGE_THRESHOLD = 5000;
 const VALID_TRANSFER_OTPS = ["224809", "453107", "109867", "435698", "994532"];
 
 function buildTransactionHistory() {
-    const name = "Keneth Thatcher";
+    const name = "Kenneth Thatcher";
     const sys = "System";
     const txs = [];
     let n = 1;
@@ -71,338 +71,338 @@ function buildTransactionHistory() {
 
     // Account opening — 10 years ago
     add("2016-07-09", "Membership Account Opened — First Choice Credit Union", "Account", 5000.00);
-    add("2016-07-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -128.50);
-    add("2016-07-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 3100.00);
-    add("2016-08-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 3100.00);
+    add("2016-07-10", "Bill Pay — AT&T Wireless", "Bill Pay", -128.50);
+    add("2016-07-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 3100.00);
+    add("2016-08-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 3100.00);
     add("2016-08-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2016-08-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -128.50);
+    add("2016-08-10", "Bill Pay — AT&T Wireless", "Bill Pay", -128.50);
     add("2016-08-12", "Bill Pay — Delmarva Power", "Bill Pay", -142.30);
-    add("2016-09-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 3100.00);
-    add("2016-09-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -128.50);
-    add("2016-09-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 3100.00);
+    add("2016-09-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 3100.00);
+    add("2016-09-10", "Bill Pay — AT&T Wireless", "Bill Pay", -128.50);
+    add("2016-09-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 3100.00);
     add("2016-10-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2016-10-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -128.50);
+    add("2016-10-10", "Bill Pay — AT&T Wireless", "Bill Pay", -128.50);
     add("2016-10-22", "Transfer to Savings Account ****5521", "Transfer", -1000.00);
-    add("2016-11-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -128.50);
+    add("2016-11-10", "Bill Pay — AT&T Wireless", "Bill Pay", -128.50);
     add("2016-11-18", "Bill Pay — Verizon Fios", "Bill Pay", -89.99);
-    add("2016-12-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -128.50);
+    add("2016-12-10", "Bill Pay — AT&T Wireless", "Bill Pay", -128.50);
     add("2016-12-15", "Holiday Bonus Deposit", "Deposit", 3500.00);
     add("2016-12-20", "Bill Pay — State Farm Insurance", "Bill Pay", -425.00);
     add("2016-12-22", "Bill Pay — Comcast Xfinity", "Bill Pay", -79.99);
 
-    add("2017-01-03", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 3250.00);
-    add("2017-01-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -132.00);
-    add("2017-01-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 3250.00);
+    add("2017-01-03", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 3250.00);
+    add("2017-01-10", "Bill Pay — AT&T Wireless", "Bill Pay", -132.00);
+    add("2017-01-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 3250.00);
     add("2017-02-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2017-02-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -132.00);
+    add("2017-02-10", "Bill Pay — AT&T Wireless", "Bill Pay", -132.00);
     add("2017-03-10", "Mobile Check Deposit — Tax Refund", "Deposit", 4800.00);
-    add("2017-03-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -132.00);
+    add("2017-03-10", "Bill Pay — AT&T Wireless", "Bill Pay", -132.00);
     add("2017-04-08", "Whole Foods Market", "Shopping", -186.42);
-    add("2017-04-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -132.00);
+    add("2017-04-10", "Bill Pay — AT&T Wireless", "Bill Pay", -132.00);
     add("2017-05-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2017-05-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -132.00);
-    add("2017-06-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -132.00);
+    add("2017-05-10", "Bill Pay — AT&T Wireless", "Bill Pay", -132.00);
+    add("2017-06-10", "Bill Pay — AT&T Wireless", "Bill Pay", -132.00);
     add("2017-06-22", "Bill Pay — Sussex County Water", "Bill Pay", -48.75);
     add("2017-06-30", "Dividend / Interest Credit", "Dividend", 420.00);
     add("2017-07-09", "1-Year Membership Anniversary Credit", "Deposit", 50.00);
-    add("2017-07-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -132.00);
-    add("2017-08-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -132.00);
+    add("2017-07-10", "Bill Pay — AT&T Wireless", "Bill Pay", -132.00);
+    add("2017-08-10", "Bill Pay — AT&T Wireless", "Bill Pay", -132.00);
     add("2017-08-14", "Home Depot", "Shopping", -248.90);
-    add("2017-09-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -132.00);
+    add("2017-09-10", "Bill Pay — AT&T Wireless", "Bill Pay", -132.00);
     add("2017-09-22", "Transfer to Savings Account ****5521", "Transfer", -1500.00);
-    add("2017-10-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -132.00);
+    add("2017-10-10", "Bill Pay — AT&T Wireless", "Bill Pay", -132.00);
     add("2017-11-03", "ATM Withdrawal — Milton Branch", "Withdrawal", -300.00);
-    add("2017-11-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -132.00);
-    add("2017-12-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -132.00);
+    add("2017-11-10", "Bill Pay — AT&T Wireless", "Bill Pay", -132.00);
+    add("2017-12-10", "Bill Pay — AT&T Wireless", "Bill Pay", -132.00);
     add("2017-12-15", "Holiday Bonus Deposit", "Deposit", 3600.00);
     add("2017-12-22", "Bill Pay — Comcast Xfinity", "Bill Pay", -79.99);
 
-    add("2018-01-02", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 3400.00);
-    add("2018-01-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -135.00);
+    add("2018-01-02", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 3400.00);
+    add("2018-01-10", "Bill Pay — AT&T Wireless", "Bill Pay", -135.00);
     add("2018-02-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2018-02-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -135.00);
-    add("2018-03-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -135.00);
+    add("2018-02-10", "Bill Pay — AT&T Wireless", "Bill Pay", -135.00);
+    add("2018-03-10", "Bill Pay — AT&T Wireless", "Bill Pay", -135.00);
     add("2018-03-12", "Bill Pay — Delmarva Power", "Bill Pay", -158.20);
-    add("2018-04-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -135.00);
+    add("2018-04-10", "Bill Pay — AT&T Wireless", "Bill Pay", -135.00);
     add("2018-04-18", "Costco Wholesale", "Shopping", -312.44);
-    add("2018-05-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -135.00);
+    add("2018-05-10", "Bill Pay — AT&T Wireless", "Bill Pay", -135.00);
     add("2018-06-01", "Wire Transfer In — Inheritance Settlement", "Deposit", 85000.00);
-    add("2018-06-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -135.00);
+    add("2018-06-10", "Bill Pay — AT&T Wireless", "Bill Pay", -135.00);
     add("2018-06-22", "Bill Pay — Sussex County Water", "Bill Pay", -52.10);
     add("2018-06-30", "Dividend / Interest Credit", "Dividend", 455.00);
     add("2018-07-09", "2-Year Membership Anniversary", "Account", 0);
-    add("2018-07-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -135.00);
-    add("2018-08-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -135.00);
+    add("2018-07-10", "Bill Pay — AT&T Wireless", "Bill Pay", -135.00);
+    add("2018-08-10", "Bill Pay — AT&T Wireless", "Bill Pay", -135.00);
     add("2018-08-20", "Transfer to Savings Account ****5521", "Transfer", -10000.00);
-    add("2018-09-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -135.00);
+    add("2018-09-10", "Bill Pay — AT&T Wireless", "Bill Pay", -135.00);
     add("2018-10-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2018-10-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -135.00);
-    add("2018-11-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -135.00);
+    add("2018-10-10", "Bill Pay — AT&T Wireless", "Bill Pay", -135.00);
+    add("2018-11-10", "Bill Pay — AT&T Wireless", "Bill Pay", -135.00);
     add("2018-11-15", "FCCU Pay to Jordan Ellis", "FCCU Pay", -500.00);
-    add("2018-12-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -135.00);
+    add("2018-12-10", "Bill Pay — AT&T Wireless", "Bill Pay", -135.00);
     add("2018-12-15", "Holiday Bonus Deposit", "Deposit", 3700.00);
     add("2018-12-22", "Bill Pay — Comcast Xfinity", "Bill Pay", -84.99);
 
-    add("2019-01-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -138.00);
-    add("2019-01-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 3600.00);
+    add("2019-01-10", "Bill Pay — AT&T Wireless", "Bill Pay", -138.00);
+    add("2019-01-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 3600.00);
     add("2019-02-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2019-02-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -138.00);
-    add("2019-03-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -138.00);
+    add("2019-02-10", "Bill Pay — AT&T Wireless", "Bill Pay", -138.00);
+    add("2019-03-10", "Bill Pay — AT&T Wireless", "Bill Pay", -138.00);
     add("2019-03-20", "Bill Pay — State Farm Insurance", "Bill Pay", -425.00);
-    add("2019-04-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -138.00);
-    add("2019-05-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -138.00);
+    add("2019-04-10", "Bill Pay — AT&T Wireless", "Bill Pay", -138.00);
+    add("2019-05-10", "Bill Pay — AT&T Wireless", "Bill Pay", -138.00);
     add("2019-05-11", "Amazon.com", "Shopping", -94.55);
-    add("2019-06-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -138.00);
+    add("2019-06-10", "Bill Pay — AT&T Wireless", "Bill Pay", -138.00);
     add("2019-06-22", "Bill Pay — Sussex County Water", "Bill Pay", -51.40);
     add("2019-06-30", "Dividend / Interest Credit", "Dividend", 490.00);
     add("2019-07-09", "3-Year Membership Anniversary", "Account", 0);
-    add("2019-07-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -138.00);
-    add("2019-08-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -138.00);
-    add("2019-09-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -138.00);
+    add("2019-07-10", "Bill Pay — AT&T Wireless", "Bill Pay", -138.00);
+    add("2019-08-10", "Bill Pay — AT&T Wireless", "Bill Pay", -138.00);
+    add("2019-09-10", "Bill Pay — AT&T Wireless", "Bill Pay", -138.00);
     add("2019-09-14", "Home Improvement — Contractor Payment", "Transfer", -22000.00);
     add("2019-10-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2019-10-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -138.00);
-    add("2019-11-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -138.00);
+    add("2019-10-10", "Bill Pay — AT&T Wireless", "Bill Pay", -138.00);
+    add("2019-11-10", "Bill Pay — AT&T Wireless", "Bill Pay", -138.00);
     add("2019-11-22", "Shell Gas Station", "Shopping", -62.18);
-    add("2019-12-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -138.00);
+    add("2019-12-10", "Bill Pay — AT&T Wireless", "Bill Pay", -138.00);
     add("2019-12-15", "Holiday Bonus Deposit", "Deposit", 3800.00);
     add("2019-12-22", "Bill Pay — Comcast Xfinity", "Bill Pay", -84.99);
 
-    add("2020-01-02", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 3750.00);
-    add("2020-01-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -140.00);
+    add("2020-01-02", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 3750.00);
+    add("2020-01-10", "Bill Pay — AT&T Wireless", "Bill Pay", -140.00);
     add("2020-02-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2020-02-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -140.00);
-    add("2020-03-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -140.00);
+    add("2020-02-10", "Bill Pay — AT&T Wireless", "Bill Pay", -140.00);
+    add("2020-03-10", "Bill Pay — AT&T Wireless", "Bill Pay", -140.00);
     add("2020-03-18", "Bill Pay — Verizon Fios", "Bill Pay", -99.99);
-    add("2020-04-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -140.00);
+    add("2020-04-10", "Bill Pay — AT&T Wireless", "Bill Pay", -140.00);
     add("2020-04-15", "CARES Act Stimulus Deposit", "Deposit", 1200.00);
     add("2020-05-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2020-05-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -140.00);
-    add("2020-06-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -140.00);
+    add("2020-05-10", "Bill Pay — AT&T Wireless", "Bill Pay", -140.00);
+    add("2020-06-10", "Bill Pay — AT&T Wireless", "Bill Pay", -140.00);
     add("2020-06-22", "Bill Pay — Sussex County Water", "Bill Pay", -49.80);
     add("2020-06-30", "Dividend / Interest Credit", "Dividend", 525.00);
     add("2020-07-09", "4-Year Membership Anniversary", "Account", 0);
-    add("2020-07-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -140.00);
-    add("2020-08-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -140.00);
+    add("2020-07-10", "Bill Pay — AT&T Wireless", "Bill Pay", -140.00);
+    add("2020-08-10", "Bill Pay — AT&T Wireless", "Bill Pay", -140.00);
     add("2020-08-22", "Transfer to Savings Account ****5521", "Transfer", -2000.00);
-    add("2020-09-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -140.00);
-    add("2020-10-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -140.00);
+    add("2020-09-10", "Bill Pay — AT&T Wireless", "Bill Pay", -140.00);
+    add("2020-10-10", "Bill Pay — AT&T Wireless", "Bill Pay", -140.00);
     add("2020-10-12", "Netflix", "Bill Pay", -15.99);
-    add("2020-11-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -140.00);
-    add("2020-12-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -140.00);
+    add("2020-11-10", "Bill Pay — AT&T Wireless", "Bill Pay", -140.00);
+    add("2020-12-10", "Bill Pay — AT&T Wireless", "Bill Pay", -140.00);
     add("2020-12-15", "Holiday Bonus Deposit", "Deposit", 3900.00);
     add("2020-12-22", "Bill Pay — Comcast Xfinity", "Bill Pay", -89.99);
 
-    add("2021-01-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -142.00);
-    add("2021-01-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 3900.00);
+    add("2021-01-10", "Bill Pay — AT&T Wireless", "Bill Pay", -142.00);
+    add("2021-01-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 3900.00);
     add("2021-02-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2021-02-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -142.00);
+    add("2021-02-10", "Bill Pay — AT&T Wireless", "Bill Pay", -142.00);
     add("2021-03-10", "Mobile Check Deposit — Tax Refund", "Deposit", 5200.00);
-    add("2021-03-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -142.00);
+    add("2021-03-10", "Bill Pay — AT&T Wireless", "Bill Pay", -142.00);
     add("2021-04-08", "Apple Store", "Shopping", -129.00);
-    add("2021-04-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -142.00);
-    add("2021-05-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -142.00);
-    add("2021-06-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -142.00);
+    add("2021-04-10", "Bill Pay — AT&T Wireless", "Bill Pay", -142.00);
+    add("2021-05-10", "Bill Pay — AT&T Wireless", "Bill Pay", -142.00);
+    add("2021-06-10", "Bill Pay — AT&T Wireless", "Bill Pay", -142.00);
     add("2021-06-22", "Bill Pay — Sussex County Water", "Bill Pay", -54.20);
     add("2021-06-30", "Dividend / Interest Credit", "Dividend", 560.00);
     add("2021-07-09", "5-Year Membership Anniversary Credit", "Deposit", 100.00);
-    add("2021-07-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -142.00);
-    add("2021-08-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -142.00);
+    add("2021-07-10", "Bill Pay — AT&T Wireless", "Bill Pay", -142.00);
+    add("2021-08-10", "Bill Pay — AT&T Wireless", "Bill Pay", -142.00);
     add("2021-08-20", "Vehicle Purchase — Milton Auto Group", "Transfer", -18500.00);
     add("2021-09-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2021-09-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -142.00);
-    add("2021-10-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -142.00);
+    add("2021-09-10", "Bill Pay — AT&T Wireless", "Bill Pay", -142.00);
+    add("2021-10-10", "Bill Pay — AT&T Wireless", "Bill Pay", -142.00);
     add("2021-11-03", "FCCU Pay to Morgan Blake", "FCCU Pay", -250.00);
-    add("2021-11-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -142.00);
-    add("2021-12-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -142.00);
+    add("2021-11-10", "Bill Pay — AT&T Wireless", "Bill Pay", -142.00);
+    add("2021-12-10", "Bill Pay — AT&T Wireless", "Bill Pay", -142.00);
     add("2021-12-15", "Holiday Bonus Deposit", "Deposit", 4000.00);
     add("2021-12-22", "Bill Pay — Comcast Xfinity", "Bill Pay", -89.99);
 
-    add("2022-01-03", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4100.00);
-    add("2022-01-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2022-01-03", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4100.00);
+    add("2022-01-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2022-02-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2022-02-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2022-03-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2022-02-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2022-03-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2022-03-12", "Bill Pay — Delmarva Power", "Bill Pay", -171.40);
-    add("2022-04-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2022-05-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2022-04-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2022-05-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2022-05-19", "Whole Foods Market", "Shopping", -203.18);
-    add("2022-06-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2022-06-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2022-06-22", "Bill Pay — Sussex County Water", "Bill Pay", -55.60);
     add("2022-06-30", "Dividend / Interest Credit", "Dividend", 595.00);
     add("2022-07-09", "6-Year Membership Anniversary", "Account", 0);
-    add("2022-07-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2022-08-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2022-07-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2022-08-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2022-08-22", "Transfer to Savings Account ****5521", "Transfer", -2500.00);
-    add("2022-09-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2022-09-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2022-10-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2022-10-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2022-10-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2022-11-03", "FCCU Pay to Jordan Ellis", "FCCU Pay", -750.00);
-    add("2022-11-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2022-12-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2022-11-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2022-12-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2022-12-15", "Holiday Bonus Deposit", "Deposit", 4100.00);
     add("2022-12-22", "Bill Pay — Comcast Xfinity", "Bill Pay", -89.99);
 
-    add("2023-01-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2023-01-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4250.00);
+    add("2023-01-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2023-01-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4250.00);
     add("2023-02-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2023-02-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2023-03-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2023-02-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2023-03-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2023-03-20", "Bill Pay — State Farm Insurance", "Bill Pay", -448.00);
-    add("2023-04-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2023-05-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2023-04-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2023-05-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2023-05-19", "Wire Transfer to Vanguard Brokerage", "Transfer", -25000.00);
-    add("2023-06-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2023-06-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2023-06-22", "Bill Pay — Sussex County Water", "Bill Pay", -57.15);
     add("2023-06-30", "Dividend / Interest Credit", "Dividend", 640.00);
     add("2023-07-09", "7-Year Membership Anniversary", "Account", 0);
-    add("2023-07-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2023-08-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2023-07-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2023-08-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2023-08-14", "Home Depot", "Shopping", -312.55);
-    add("2023-09-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2023-09-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2023-09-22", "Transfer to Savings Account ****5521", "Transfer", -3000.00);
-    add("2023-10-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2023-11-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2023-10-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2023-11-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2023-11-10", "Costco Wholesale", "Shopping", -287.90);
-    add("2023-12-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2023-12-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2023-12-15", "Holiday Bonus Deposit", "Deposit", 4200.00);
     add("2023-12-22", "Bill Pay — Comcast Xfinity", "Bill Pay", -89.99);
 
-    add("2024-01-02", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4400.00);
-    add("2024-01-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2024-01-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4400.00);
+    add("2024-01-02", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4400.00);
+    add("2024-01-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2024-01-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4400.00);
     add("2024-02-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2024-02-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2024-02-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2024-02-28", "Mobile Check Deposit — Client Retainer", "Deposit", 12500.00);
-    add("2024-03-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2024-03-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2024-03-12", "Bill Pay — Delmarva Power", "Bill Pay", -164.88);
     add("2024-04-08", "Amazon.com", "Shopping", -156.22);
-    add("2024-04-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2024-04-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2024-05-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2024-05-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2024-05-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2024-06-01", "Dividend / Interest Credit", "Dividend", 710.00);
-    add("2024-06-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2024-06-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2024-06-18", "Bill Pay — Verizon Fios", "Bill Pay", -109.99);
     add("2024-06-22", "Bill Pay — Sussex County Water", "Bill Pay", -58.40);
-    add("2024-07-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4500.00);
+    add("2024-07-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4500.00);
     add("2024-07-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
     add("2024-07-09", "8-Year Membership Anniversary Credit", "Deposit", 75.00);
-    add("2024-07-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2024-08-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2024-08-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4500.00);
+    add("2024-07-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2024-08-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2024-08-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4500.00);
     add("2024-08-22", "Transfer to Savings Account ****5521", "Transfer", -2000.00);
     add("2024-09-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2024-09-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2024-09-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2024-09-14", "Whole Foods Market", "Shopping", -178.40);
-    add("2024-10-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4500.00);
+    add("2024-10-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4500.00);
     add("2024-10-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2024-10-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2024-10-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2024-10-20", "Bill Pay — State Farm Insurance", "Bill Pay", -448.00);
     add("2024-11-03", "FCCU Pay to Morgan Blake", "FCCU Pay", -400.00);
-    add("2024-11-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2024-11-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4500.00);
+    add("2024-11-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2024-11-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4500.00);
     add("2024-12-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2024-12-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2024-12-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2024-12-15", "Holiday Bonus Deposit", "Deposit", 4500.00);
     add("2024-12-22", "Bill Pay — Comcast Xfinity", "Bill Pay", -89.99);
 
-    add("2025-01-02", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2025-01-02", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2025-01-10", "Annual Membership Fee Waiver Credit", "Deposit", 25.00);
-    add("2025-01-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2025-01-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2025-01-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2025-01-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2025-02-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2025-02-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2025-02-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2025-02-12", "Bill Pay — Delmarva Power", "Bill Pay", -172.10);
-    add("2025-03-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2025-03-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2025-03-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2025-03-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2025-03-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2025-03-18", "Bill Pay — Verizon Fios", "Bill Pay", -109.99);
-    add("2025-04-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2025-04-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2025-04-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
     add("2025-04-08", "Shell Gas Station", "Shopping", -68.40);
-    add("2025-04-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2025-05-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2025-04-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2025-05-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2025-05-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2025-05-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2025-05-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2025-05-19", "Home Depot", "Shopping", -265.00);
-    add("2025-06-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2025-06-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2025-06-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2025-06-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2025-06-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2025-06-22", "Bill Pay — Sussex County Water", "Bill Pay", -59.80);
     add("2025-06-30", "Dividend / Interest Credit", "Dividend", 755.00);
-    add("2025-07-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2025-07-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2025-07-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
     add("2025-07-09", "9-Year Membership Anniversary", "Account", 0);
-    add("2025-07-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2025-07-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
-    add("2025-08-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2025-07-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2025-07-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
+    add("2025-08-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2025-08-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2025-08-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2025-08-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2025-08-22", "Transfer to Savings Account ****5521", "Transfer", -2500.00);
-    add("2025-09-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2025-09-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2025-09-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2025-09-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2025-09-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2025-09-14", "Costco Wholesale", "Shopping", -298.55);
-    add("2025-10-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2025-10-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2025-10-03", "ATM Withdrawal — Milton Branch", "Withdrawal", -400.00);
     add("2025-10-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2025-10-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2025-10-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2025-10-20", "Bill Pay — State Farm Insurance", "Bill Pay", -448.00);
-    add("2025-11-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2025-11-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2025-11-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2025-11-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2025-11-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
-    add("2025-12-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2025-11-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2025-11-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
+    add("2025-12-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2025-12-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2025-12-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2025-12-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2025-12-15", "Holiday Bonus Deposit", "Deposit", 4800.00);
     add("2025-12-22", "Bill Pay — Comcast Xfinity", "Bill Pay", -89.99);
 
     // 2026 — current year, up to date (Jul 2026)
-    add("2026-01-02", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2026-01-02", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2026-01-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2026-01-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2026-01-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2026-01-12", "Bill Pay — Delmarva Power", "Bill Pay", -168.90);
-    add("2026-01-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2026-01-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2026-01-18", "Bill Pay — Verizon Fios", "Bill Pay", -109.99);
     add("2026-01-22", "Bill Pay — Comcast Xfinity", "Bill Pay", -89.99);
-    add("2026-02-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2026-02-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2026-02-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2026-02-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2026-02-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2026-02-14", "Whole Foods Market", "Shopping", -156.80);
-    add("2026-02-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
-    add("2026-03-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2026-02-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
+    add("2026-03-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2026-03-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2026-03-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2026-03-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
     add("2026-03-12", "Bill Pay — Delmarva Power", "Bill Pay", -168.22);
-    add("2026-03-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2026-03-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2026-03-20", "Bill Pay — State Farm Insurance", "Bill Pay", -448.00);
     add("2026-03-22", "Bill Pay — Sussex County Water", "Bill Pay", -61.25);
-    add("2026-04-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2026-04-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2026-04-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
     add("2026-04-08", "FCCU Pay to Morgan Blake", "FCCU Pay", -320.00);
-    add("2026-04-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2026-04-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2026-04-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2026-04-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2026-04-18", "Bill Pay — Verizon Fios", "Bill Pay", -109.99);
-    add("2026-05-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2026-05-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2026-05-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2026-05-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2026-05-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2026-05-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2026-05-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2026-05-22", "Transfer to Savings Account ****5521", "Transfer", -2000.00);
     add("2026-05-22", "Bill Pay — Comcast Xfinity", "Bill Pay", -89.99);
     add("2026-06-01", "Dividend / Interest Credit", "Dividend", 780.50);
-    add("2026-06-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2026-06-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2026-06-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
-    add("2026-06-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
-    add("2026-06-15", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2026-06-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
+    add("2026-06-15", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2026-06-18", "Bill Pay — Verizon Fios", "Bill Pay", -109.99);
     add("2026-06-20", "Transfer to Savings Account ****5521", "Transfer", -2000.00);
     add("2026-06-22", "Bill Pay — Sussex County Water", "Bill Pay", -61.25);
-    add("2026-07-01", "Direct Deposit — Thatcher Consulting LLC", "Deposit", 4600.00);
+    add("2026-07-01", "Direct Deposit — Kenny Construction Group, LLC", "Deposit", 4600.00);
     add("2026-07-05", "Mortgage Payment — FCCU Home Loan", "Mortgage", -1850.00);
     add("2026-07-08", "Whole Foods Market", "Shopping", -142.67);
     add("2026-07-09", "10-Year Membership Anniversary Credit", "Deposit", 150.00);
-    add("2026-07-10", "Bill Pay — T-Mobile Postpaid", "Bill Pay", -145.00);
+    add("2026-07-10", "Bill Pay — AT&T Wireless", "Bill Pay", -145.00);
 
     txs.sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
     return txs;
@@ -427,7 +427,7 @@ const INITIAL_ACCOUNT_DATA = {
     notifications: [
         { id: 1, date: "2026-07-09", title: "10-Year Membership", body: "Thank you for 10 years with First Choice Credit Union. A $150 anniversary credit has been posted.", read: false },
         { id: 2, date: "2026-07-05", title: "Mortgage Payment Posted", body: "Your FCCU Home Loan payment of $1,850.00 posted successfully.", read: false },
-        { id: 3, date: "2026-07-01", title: "Direct Deposit Received", body: "Thatcher Consulting LLC deposited $4,600.00.", read: true },
+        { id: 3, date: "2026-07-01", title: "Direct Deposit Received", body: "Kenny Construction Group, LLC deposited $4,600.00.", read: true },
         { id: 4, date: "2026-06-01", title: "Dividend Posted", body: "Your mid-year dividend of $780.50 has been credited.", read: true }
     ],
     mortgage: {
@@ -448,7 +448,7 @@ const INITIAL_ACCOUNT_DATA = {
     pendingTransactions: [],
     beneficiaries: [],
     payees: [
-        { id: 1, name: "T-Mobile Postpaid", account: "****7193", category: "Telecom" },
+        { id: 1, name: "AT&T Wireless", account: "****7193", category: "Telecom" },
         { id: 2, name: "Delmarva Power", account: "****4521", category: "Utilities" },
         { id: 3, name: "Verizon Fios", account: "****8834", category: "Telecom" },
         { id: 4, name: "State Farm Insurance", account: "****2290", category: "Insurance" },
@@ -457,11 +457,11 @@ const INITIAL_ACCOUNT_DATA = {
         { id: 7, name: "Sussex County Water", account: "****3308", category: "Utilities" }
     ],
     businesses: [
-        { name: "Thatcher Consulting LLC", type: "LLC" }
+        { name: "Kenny Construction Group, LLC", type: "LLC" }
     ],
     scheduledPayments: [
         { id: 1, payee: "FCCU Home Loan", amount: 1850.00, nextDate: "2026-08-05", frequency: "Monthly" },
-        { id: 2, payee: "T-Mobile Postpaid", amount: 145.00, nextDate: "2026-08-10", frequency: "Monthly" },
+        { id: 2, payee: "AT&T Wireless", amount: 145.00, nextDate: "2026-08-10", frequency: "Monthly" },
         { id: 3, payee: "Delmarva Power", amount: 165.00, nextDate: "2026-08-12", frequency: "Monthly" },
         { id: 4, payee: "Verizon Fios", amount: 109.99, nextDate: "2026-08-18", frequency: "Monthly" },
         { id: 5, payee: "Comcast Xfinity", amount: 89.99, nextDate: "2026-08-22", frequency: "Monthly" }
@@ -481,7 +481,7 @@ const INITIAL_ACCOUNT_DATA = {
 };
 
 const INITIAL_CHATS = [
-    { sender: "Member Services", msg: "Welcome to First Choice Credit Union Online Banking. How can we help you today, Keneth?", timestamp: "09:00 AM" }
+    { sender: "Member Services", msg: "Welcome to First Choice Credit Union Online Banking. How can we help you today, Kenneth?", timestamp: "09:00 AM" }
 ];
 
 // ── Storage Helpers ──
@@ -1276,7 +1276,7 @@ function openStatement(year, month) {
                 <div>${monthName}</div>
                 <div style="margin-top:8px;font-family:monospace">Acct: ${maskAccount(data.accountNumber)}</div>
                 <div style="font-family:monospace">Routing: ${data.routingNumber}</div>
-                <div>Member: Keneth Thatcher</div>
+                <div>Member: Kenneth Thatcher</div>
             </div>
         </div>
         <div class="summary">

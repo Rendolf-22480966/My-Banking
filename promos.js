@@ -146,7 +146,7 @@ const PROMO_CAMPAIGNS = [
         category: "FCCU",
         sponsor: "First Choice Credit Union",
         title: "Bank on the Go with FCCU Mobile",
-        subtitle: "Deposit checks, pay T-Mobile and utilities, and send money — all from your phone.",
+        subtitle: "Deposit checks, pay AT&T Wireless and utilities, and send money — all from your phone.",
         cta: "Download Free",
         ctaAction: "app",
         type: "phone",
@@ -189,7 +189,7 @@ function getPhoneMockupHTML() {
                         </div>
                         <div class="phone-tx-list">
                             <div class="phone-tx-item"><span class="phone-tx-dot green"></span>Direct Deposit <span class="phone-tx-amt green">+$4,600</span></div>
-                            <div class="phone-tx-item"><span class="phone-tx-dot"></span>T-Mobile <span class="phone-tx-amt">-$145</span></div>
+                            <div class="phone-tx-item"><span class="phone-tx-dot"></span>AT&T Wireless <span class="phone-tx-amt">-$145</span></div>
                             <div class="phone-tx-item"><span class="phone-tx-dot green"></span>FCCU Pay <span class="phone-tx-amt green">+$200</span></div>
                         </div>
                     </div>
