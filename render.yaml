@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: first-choice-credit-union
+    runtime: static
+    buildCommand: echo "static site"
+    staticPublishPath: .

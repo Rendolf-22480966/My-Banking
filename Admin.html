@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Choice Credit Union — Admin Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="Bank.js"></script>
+    <script src="promos.js"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans flex flex-col" data-page="Admin Portal">
+
+    <header class="brand-bg px-6 py-4 flex justify-between items-center shadow-lg border-b border-amber-900/30">
+        <div class="flex items-center gap-3">
+            <img src="logo.svg" alt="" class="w-10 h-10">
+            <div>
+                <h1 class="font-display text-base font-bold accent-text tracking-wide lowercase" data-brand="name">first choice credit union</h1>
+                <p class="text-[10px] text-emerald-300/70 uppercase tracking-widest">Operations Admin Portal</p>
+            </div>
+        </div>
+        <a href="Index.html" class="btn-gold text-xs py-2.5 px-5 rounded-lg transition hover:opacity-90">
+            Return to Dashboard
+        </a>
+    </header>
+
+    <main class="flex-grow p-4 md:p-8 space-y-6 max-w-6xl w-full mx-auto">
+
+        <div class="bg-emerald-900/40 border border-emerald-700 rounded-xl p-4 text-center text-sm text-emerald-200">
+            <strong>Member Account Active</strong> — Keneth Thatcher · Premier Individual Checking · Balance $400,000.00
+        </div>
+
+        <section class="card-premium bg-slate-800 border-slate-700 p-6">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-4">Balance Management</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-400 uppercase mb-1">Available Balance ($)</label>
+                    <input id="adminAvailInput" type="number" step="0.01" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-emerald-400 font-mono focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-400 uppercase mb-1">Current Balance ($)</label>
+                    <input id="adminCurrInput" type="number" step="0.01" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-emerald-400 font-mono focus:outline-none focus:border-amber-500">
+                </div>
+            </div>
+            <button onclick="saveAdminBalances()" class="mt-4 w-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs py-2.5 rounded-lg transition">
+                Update Balances
+            </button>
+        </section>
+
+        <section class="card-premium bg-slate-800 border-slate-700 overflow-hidden">
+            <div class="p-5 border-b border-slate-700">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400">Transfer &amp; Transaction Queue</h3>
+                <p class="text-[11px] text-slate-400 mt-0.5">Processing = under $5,000 · Pending = $5,000+. Approve to post and debit the member account.</p>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-black/30 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                        <tr>
+                            <th class="py-3 px-4">Date</th>
+                            <th class="py-3 px-4">Description</th>
+                            <th class="py-3 px-4">Status</th>
+                            <th class="py-3 px-4">Initiated By</th>
+                            <th class="py-3 px-4 text-right">Amount</th>
+                            <th class="py-3 px-4 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminPendingBody" class="text-xs divide-y divide-slate-700"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card-premium bg-slate-800 border-slate-700 p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2">Member Services Chat</h3>
+                <div id="adminChatContainer" class="bg-slate-950 p-4 rounded-lg border border-slate-700 overflow-y-auto space-y-2 text-xs font-mono h-[200px]"></div>
+            </div>
+            <div class="flex flex-col gap-3">
+                <label class="text-[10px] font-bold uppercase text-slate-500">Send Reply</label>
+                <textarea id="adminReplyText" rows="4" placeholder="Type official response..." class="flex-grow bg-slate-950 border border-slate-700 rounded-lg p-3 text-xs text-emerald-400 focus:outline-none focus:border-amber-500 resize-none"></textarea>
+                <button onclick="dispatchAdminReply()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs py-2.5 rounded-lg transition">
+                    Send Message
+                </button>
+            </div>
+        </section>
+
+        <section class="card-premium bg-slate-800 border-slate-700 p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+                <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2">Corporate Entities</h3>
+                <div class="space-y-2">
+                    <input id="bizName" type="text" placeholder="Business name" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs focus:outline-none">
+                    <select id="bizType" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-300 focus:outline-none">
+                        <option value="Corporate">Corporate</option>
+                        <option value="Investment">Investment</option>
+                        <option value="LLC">LLC</option>
+                    </select>
+                    <button onclick="addBusinessEntity()" class="w-full bg-blue-700 hover:bg-blue-600 text-white font-bold text-xs py-2 rounded-lg">Add Business</button>
+                </div>
+            </div>
+            <div class="md:col-span-2 bg-slate-900/60 rounded-xl p-4 border border-slate-700">
+                <ul id="bizList" class="text-xs space-y-2"></ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-slate-600 text-center text-[10px] py-4 border-t border-slate-800">
+        <p><span data-brand="name-proper">First Choice Credit Union</span> Admin Portal &mdash; Authorized Personnel Only</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            applyBranding();
+            refreshAdminPanel();
+        });
+
+        function refreshAdminPanel() {
+            const data = getAccountData();
+            document.getElementById("adminAvailInput").value = data.availableBalance;
+            document.getElementById("adminCurrInput").value = data.currentBalance;
+            renderAdminChat();
+
+            const body = document.getElementById("adminPendingBody");
+            body.innerHTML = "";
+            if (!data.pendingTransactions.length) {
+                body.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-slate-500">No transactions awaiting approval</td></tr>';
+            } else {
+                data.pendingTransactions.forEach((tx, idx) => {
+                    const q = tx.queueStatus || (Math.abs(tx.amount) >= 5000 ? "Pending" : "Processing");
+                    const statusClass = q === "Pending"
+                        ? "bg-amber-900/50 text-amber-300 border-amber-700"
+                        : "bg-blue-900/50 text-blue-300 border-blue-700";
+                    const meta = tx.meta || {};
+                    const detail = meta.recipientName
+                        ? `<span class="text-[9px] text-slate-500 block mt-0.5">${meta.recipientName} · ${meta.bankName || ""} · ${meta.accountMasked || ""}</span>`
+                        : "";
+                    const row = document.createElement("tr");
+                    row.className = "hover:bg-slate-700/30";
+                    row.innerHTML = `
+                        <td class="py-3 px-4 text-slate-500">${tx.date}<br><span class="text-[9px]">${tx.time || ""}</span></td>
+                        <td class="py-3 px-4 font-semibold">${tx.desc}${detail}<br><span class="text-[9px] font-mono text-slate-500">${tx.confirmationId || ""}</span></td>
+                        <td class="py-3 px-4"><span class="text-[10px] px-2 py-0.5 rounded-full border font-bold ${statusClass}">${q}</span></td>
+                        <td class="py-3 px-4 text-slate-400">${tx.authBy}</td>
+                        <td class="py-3 px-4 text-right font-bold font-mono ${tx.amount < 0 ? "text-slate-100" : "text-emerald-400"}">${formatCurrencySigned(tx.amount)}</td>
+                        <td class="py-3 px-4 text-center space-x-1">
+                            <button onclick="handleApprove(${idx})" class="bg-emerald-800 hover:bg-emerald-700 text-emerald-300 font-bold py-1 px-3 rounded text-[11px]">${q === "Pending" ? "Process" : "Approve"}</button>
+                            <button onclick="handleReject(${idx})" class="bg-red-900/60 hover:bg-red-800 text-red-300 font-bold py-1 px-3 rounded text-[11px]">Reject</button>
+                        </td>`;
+                    body.appendChild(row);
+                });
+            }
+
+            const bizList = document.getElementById("bizList");
+            bizList.innerHTML = data.businesses.map(b =>
+                `<li class="flex justify-between items-center py-2 border-b border-slate-800">
+                    <span class="font-semibold">${b.name}</span>
+                    <span class="text-[10px] bg-slate-800 text-amber-400 px-2 py-0.5 rounded border border-slate-700 uppercase">${b.type}</span>
+                </li>`
+            ).join("");
+        }
+
+        function saveAdminBalances() {
+            const data = getAccountData();
+            data.availableBalance = parseFloat(document.getElementById("adminAvailInput").value) || 0;
+            data.currentBalance = parseFloat(document.getElementById("adminCurrInput").value) || 0;
+            updateAccountData(data);
+            showToast("Balances updated successfully.", "success");
+            refreshAdminPanel();
+        }
+
+        function handleApprove(index) {
+            const approved = approveTransaction(index);
+            if (approved) showToast(`${approved.queueStatus === "Pending" ? "Processed" : "Approved"}: ${approved.desc} — posted to account.`, "success");
+            refreshAdminPanel();
+        }
+
+        function handleReject(index) {
+            const rejected = rejectTransaction(index);
+            if (rejected) showToast(`Rejected: ${rejected.desc}`, "info");
+            refreshAdminPanel();
+        }
+
+        function addBusinessEntity() {
+            const name = document.getElementById("bizName").value.trim();
+            const type = document.getElementById("bizType").value;
+            if (!name) return showToast("Enter a business name.", "error");
+            const data = getAccountData();
+            data.businesses.push({ name, type });
+            updateAccountData(data);
+            document.getElementById("bizName").value = "";
+            showToast(`${name} added.`, "success");
+            refreshAdminPanel();
+        }
+
+        function renderAdminChat() {
+            const container = document.getElementById("adminChatContainer");
+            const chats = getChatData();
+            container.innerHTML = chats.map(c => {
+                const isStaff = c.sender === "Member Services" || c.sender === "Client Services" || c.sender === "Admin Override";
+                return `<p class="${isStaff ? 'text-slate-500' : 'text-amber-400'}">
+                    [${c.timestamp}] <strong>${c.sender}:</strong> <span class="text-slate-200">${c.msg}</span>
+                </p>`;
+            }).join("");
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function dispatchAdminReply() {
+            const msg = document.getElementById("adminReplyText").value.trim();
+            if (!msg) return showToast("Enter a message.", "error");
+            sendChatMessage("Admin Override", msg);
+            document.getElementById("adminReplyText").value = "";
+            renderAdminChat();
+        }
+
+        setInterval(renderAdminChat, 2000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Choice Credit Union — Transfer Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="transfer.css">
+    <script src="Bank.js"></script>
+    <script src="banks.js"></script>
+    <script src="promos.js"></script>
+</head>
+<body class="tc-page antialiased text-slate-900" data-page="Transfer Center">
+
+    <!-- Premium loader -->
+    <div id="premiumLoader" class="premium-loader">
+        <div class="premium-loader-inner">
+            <img src="logo.svg" alt="" class="premium-loader-logo">
+            <p class="premium-loader-brand">First Choice Credit Union</p>
+            <p class="premium-loader-msg" id="loaderMsg">Please wait</p>
+            <div class="premium-loader-bar"><span id="loaderBarFill"></span></div>
+            <p class="premium-loader-sub" id="loaderSub">Preparing a secure session…</p>
+        </div>
+    </div>
+
+    <header class="tc-header">
+        <div class="flex items-center gap-3">
+            <img src="logo.svg" alt="" class="w-9 h-9">
+            <div>
+                <p class="text-sm font-bold accent-text" data-brand="name">first choice credit union</p>
+                <p class="text-[10px] uppercase tracking-widest text-white/60">Transfer Center</p>
+            </div>
+        </div>
+        <a href="Index.html">← Dashboard</a>
+    </header>
+
+    <div class="tc-shell">
+        <div class="tc-steps" id="tcSteps"></div>
+
+        <!-- STEP: Form -->
+        <section id="stepForm" class="tc-card">
+            <h2>Transfer Money</h2>
+            <p class="tc-sub">Send funds securely to any U.S. bank account.</p>
+
+            <div class="tc-from" id="fromAccountCard"></div>
+
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Transfer To</p>
+            <div class="tc-radio-row">
+                <button type="button" class="tc-radio active" id="modeExisting" onclick="setRecipientMode('existing')">Existing Beneficiary</button>
+                <button type="button" class="tc-radio" id="modeNew" onclick="setRecipientMode('new')">New Recipient</button>
+            </div>
+
+            <!-- Existing beneficiaries -->
+            <div id="existingPanel">
+                <div id="beneficiaryList"></div>
+                <p id="noBeneficiaries" class="text-xs text-slate-400 hidden">No saved beneficiaries yet. Switch to New Recipient.</p>
+            </div>
+
+            <!-- New recipient / bank search -->
+            <div id="newPanel" class="tc-hidden">
+                <div class="tc-field">
+                    <label>Search Bank</label>
+                    <input id="bankSearch" type="search" class="form-input" placeholder="Search any U.S. bank..." oninput="onBankSearch()">
+                </div>
+
+                <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Popular Banks</p>
+                <div class="popular-grid" id="popularBanks"></div>
+
+                <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mt-2">All Banks</p>
+                <div class="bank-dir" id="bankDirectory"></div>
+
+                <div id="selectedBankBox" class="tc-hidden tc-selected-bank"></div>
+
+                <div class="tc-field mt-3">
+                    <label>Account Number</label>
+                    <input id="acctNumber" type="text" inputmode="numeric" class="form-input font-mono" placeholder="Enter account number" oninput="onAccountNumberInput()">
+                </div>
+
+                <div id="recipientDetailsPanel" class="tc-hidden space-y-3 mt-1">
+                    <div class="tc-field">
+                        <label>Recipient Full Name</label>
+                        <input id="recipientNameInput" type="text" class="form-input" placeholder="Full legal name" oninput="clearVerify()">
+                    </div>
+                    <div class="tc-field">
+                        <label>Recipient Address</label>
+                        <input id="recipientAddressInput" type="text" class="form-input" placeholder="Street, city, state, ZIP" oninput="clearVerify()">
+                    </div>
+                    <button type="button" class="tc-btn tc-btn-primary" onclick="runVerify()">Verify Account</button>
+                    <div id="verifyResult"></div>
+                </div>
+            </div>
+
+            <div class="tc-field mt-4">
+                <label>Amount ($)</label>
+                <input id="txAmount" type="number" step="0.01" min="0.01" class="form-input font-mono text-lg" placeholder="0.00">
+            </div>
+
+            <div class="tc-field">
+                <label>Transfer Description</label>
+                <input id="txDesc" type="text" class="form-input" placeholder="e.g. Rent Payment" maxlength="80">
+            </div>
+
+            <label class="tc-check" id="saveBeneWrap">
+                <input type="checkbox" id="saveBeneficiary" checked>
+                <span>Save recipient as beneficiary for next time</span>
+            </label>
+
+            <button type="button" class="tc-btn tc-btn-primary" onclick="goToReview()">Continue →</button>
+        </section>
+
+        <!-- STEP: Review -->
+        <section id="stepReview" class="tc-card tc-hidden">
+            <h2>Review Transfer</h2>
+            <p class="tc-sub">Confirm the details before we send a one-time passcode to your phone.</p>
+            <div id="reviewBody"></div>
+            <button type="button" class="tc-btn tc-btn-primary mt-4" onclick="goToOtp()">Confirm Transfer</button>
+            <button type="button" class="tc-btn tc-btn-secondary" onclick="showStep('form')">← Edit Details</button>
+        </section>
+
+        <!-- STEP: OTP -->
+        <section id="stepOtp" class="tc-card tc-hidden">
+            <h2>Security Verification</h2>
+            <p class="tc-sub text-center">Enter the 6-digit OTP</p>
+            <p class="otp-hint" id="otpHint"></p>
+            <div class="otp-boxes" id="otpBoxes">
+                <input maxlength="1" inputmode="numeric" data-i="0">
+                <input maxlength="1" inputmode="numeric" data-i="1">
+                <input maxlength="1" inputmode="numeric" data-i="2">
+                <input maxlength="1" inputmode="numeric" data-i="3">
+                <input maxlength="1" inputmode="numeric" data-i="4">
+                <input maxlength="1" inputmode="numeric" data-i="5">
+            </div>
+            <p class="otp-error" id="otpError"></p>
+            <p class="otp-hint mt-2">Didn’t get it? <button type="button" class="text-emerald-700 font-semibold underline" onclick="resendOtp()">Resend code</button> · <span id="otpTimer"></span></p>
+            <button type="button" class="tc-btn tc-btn-primary mt-4" onclick="submitOtp()">Verify</button>
+            <button type="button" class="tc-btn tc-btn-secondary" onclick="showStep('review')">← Back</button>
+        </section>
+
+        <!-- STEP: Success -->
+        <section id="stepSuccess" class="tc-card tc-hidden text-center">
+            <div class="tc-success-icon">✓</div>
+            <h2>Transfer Submitted</h2>
+            <p class="tc-sub" id="successSub"></p>
+            <div class="mb-4"><span id="successPill" class="tc-status-pill"></span></div>
+            <div id="successBody" class="text-left"></div>
+            <button type="button" class="tc-btn tc-btn-primary mt-4" onclick="downloadReceipt()">Download Receipt</button>
+            <button type="button" class="tc-btn tc-btn-secondary" onclick="shareReceipt()">Share Receipt</button>
+            <button type="button" class="tc-btn tc-btn-ghost" onclick="window.location.href='Index.html'">Done</button>
+            <button type="button" class="tc-btn tc-btn-ghost" onclick="startNewTransfer()">Make Another Transfer</button>
+        </section>
+    </div>
+
+    <script src="transfer.js"></script>
+</body>
+</html>
