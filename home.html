@@ -349,7 +349,6 @@
                 <button onclick="toggleChatDrawer(true)" class="hover:text-emerald-700">Member Services</button>
                 <button onclick="openModal('statements')" class="hover:text-emerald-700">Statements</button>
                 <button onclick="openModal('security')" class="hover:text-emerald-700">Security</button>
-                <a href="Admin.html" class="hover:text-emerald-700 font-semibold">Admin Portal</a>
             </div>
             <p class="mt-2">Equal Housing Lender · Federally Insured by NCUA · <span data-brand="phone">1-302-555-0144</span></p>
             <p class="mt-1" data-brand="address">16344 Sand Hill Rd, Milton, DE 19968</p>
@@ -396,8 +395,8 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             applyBranding();
-            const session = getActiveSession();
-            if (!session) { window.location.href = "login.html"; return; }
+            const session = requireMemberSession();
+            if (!session) return;
 
             document.getElementById("sessionName").textContent = session.fullName;
             document.getElementById("sessionRole").textContent = session.role;

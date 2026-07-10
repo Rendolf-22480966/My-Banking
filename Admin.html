@@ -19,9 +19,9 @@
                 <p class="text-[10px] text-emerald-300/70 uppercase tracking-widest">Operations Admin Portal</p>
             </div>
         </div>
-        <a href="home.html" class="btn-gold text-xs py-2.5 px-5 rounded-lg transition hover:opacity-90">
-            Return to Dashboard
-        </a>
+        <button type="button" onclick="terminateSession()" class="btn-gold text-xs py-2.5 px-5 rounded-lg transition hover:opacity-90">
+            Sign Out
+        </button>
     </header>
 
     <main class="flex-grow p-4 md:p-8 space-y-6 max-w-6xl w-full mx-auto">
@@ -109,6 +109,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             applyBranding();
+            if (!requireAdminSession()) return;
             refreshAdminPanel();
             setInterval(refreshAdminPanel, 10000);
         });

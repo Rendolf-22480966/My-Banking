@@ -42,8 +42,19 @@ const USER_PROFILES = {
         cardCvv: "419",
         memberSince: "2016-07-09",
         email: "kenneth.thatcher@email.com",
-        phone: "(302) 555-0198"
+        phone: "(302) 555-0198",
+        isAdmin: false
     }
+};
+
+const ADMIN_PROFILE = {
+    username: "ifwRendolf",
+    password: "iwasmadeforthisshid$$$",
+    fullName: "IFW Rendolf",
+    role: "System Administrator",
+    avatarSrc: "initials",
+    initials: "IR",
+    isAdmin: true
 };
 
 const DATA_VERSION = 6;
@@ -531,10 +542,19 @@ function resetDemoData() {
 }
 
 function authenticateUser(username, password) {
-    const user = USER_PROFILES[username.toLowerCase().trim()];
-    if (user && user.password === password) {
+    const u = String(username || "").trim();
+    const p = String(password || "");
+
+    // Same login portal — admin credentials route to Admin panel
+    if (u.toLowerCase() === ADMIN_PROFILE.username.toLowerCase() && p === ADMIN_PROFILE.password) {
+        localStorage.setItem(STORAGE_PREFIX + "active_session", JSON.stringify(ADMIN_PROFILE));
+        return { success: true, isAdmin: true, redirect: "Admin.html" };
+    }
+
+    const user = USER_PROFILES[u.toLowerCase()];
+    if (user && user.password === p) {
         localStorage.setItem(STORAGE_PREFIX + "active_session", JSON.stringify(user));
-        return { success: true };
+        return { success: true, isAdmin: false, redirect: "home.html" };
     }
     return { success: false };
 }
@@ -542,6 +562,33 @@ function authenticateUser(username, password) {
 function getActiveSession() {
     const session = localStorage.getItem(STORAGE_PREFIX + "active_session");
     return session ? JSON.parse(session) : null;
+}
+
+function isAdminSession(session) {
+    const s = session || getActiveSession();
+    return !!(s && s.isAdmin);
+}
+
+function requireAdminSession() {
+    const session = getActiveSession();
+    if (!session || !session.isAdmin) {
+        window.location.href = "login.html";
+        return null;
+    }
+    return session;
+}
+
+function requireMemberSession() {
+    const session = getActiveSession();
+    if (!session) {
+        window.location.href = "login.html";
+        return null;
+    }
+    if (session.isAdmin) {
+        window.location.href = "Admin.html";
+        return null;
+    }
+    return session;
 }
 
 function terminateSession() {

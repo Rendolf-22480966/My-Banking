@@ -108,7 +108,7 @@
             setTimeout(() => {
                 const res = authenticateUser(u, p);
                 if (res.success) {
-                    window.location.href = "home.html";
+                    window.location.href = res.redirect || (res.isAdmin ? "Admin.html" : "home.html");
                 } else {
                     btnText.textContent = "Sign In";
                     btnSpinner.classList.add("hidden");

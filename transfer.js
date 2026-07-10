@@ -18,11 +18,8 @@ let tcState = {
 
 document.addEventListener("DOMContentLoaded", () => {
     applyBranding();
-    const session = getActiveSession();
-    if (!session) {
-        window.location.href = "login.html";
-        return;
-    }
+    const session = requireMemberSession();
+    if (!session) return;
 
     runPremiumLoader("Please wait", "Opening secure Transfer Center…", LOADER_MS, () => {
         renderFromAccount();
