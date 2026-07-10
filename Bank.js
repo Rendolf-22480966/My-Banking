@@ -41,7 +41,7 @@ const USER_PROFILES = {
         cardExpiry: "09/28",
         cardCvv: "419",
         memberSince: "2016-07-09",
-        email: "kenneth.thatcher@email.com",
+        email: "Kenneth4162@outlook.com",
         phone: "(302) 555-0198",
         isAdmin: false
     }
