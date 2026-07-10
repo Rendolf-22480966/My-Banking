@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Choice Credit Union — Activity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="activity.css">
+    <script src="Bank.js"></script>
+    <script src="promos.js"></script>
+</head>
+<body class="activity-page" data-page="Activity">
+
+    <header class="act-header">
+        <button type="button" class="act-back" onclick="window.location.href='home.html'" aria-label="Back">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <h1>Activity</h1>
+        <div class="act-logo-wrap">
+            <img src="logo.svg" alt="FCCU" class="act-logo">
+            <span id="actBadge" class="act-badge hidden">0</span>
+        </div>
+    </header>
+
+    <main class="act-main">
+        <div class="act-tip">
+            <span class="act-tip-icon" aria-hidden="true">💡</span>
+            <p><strong>Can't find what you're looking for?</strong> Go to your <a href="home.html">account details</a> to view more activity.</p>
+        </div>
+
+        <section class="act-section">
+            <h2>Scheduled</h2>
+            <div id="actScheduled"></div>
+        </section>
+
+        <section class="act-section" id="actProcessingSection">
+            <h2>Processing</h2>
+            <p id="actProcessingTotal" class="act-section-total"></p>
+            <div id="actProcessing"></div>
+        </section>
+
+        <section class="act-section" id="actPendingSection">
+            <h2>Pending</h2>
+            <p id="actPendingTotal" class="act-section-total"></p>
+            <div id="actPending"></div>
+        </section>
+
+        <section class="act-section">
+            <div class="act-history-head">
+                <h2>History</h2>
+                <div class="act-history-controls">
+                    <button type="button" class="act-link-btn" id="actSortBtn" onclick="toggleHistorySort()">
+                        Sort: Date (Newest)
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
+                    </button>
+                    <button type="button" class="act-link-btn" onclick="cycleHistoryFilter()">
+                        Filter
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+                    </button>
+                </div>
+            </div>
+            <p id="actHistoryMeta" class="act-history-meta">Last 3 months</p>
+            <div id="actHistory"></div>
+        </section>
+    </main>
+
+    <script src="activity.js"></script>
+</body>
+</html>

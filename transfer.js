@@ -506,9 +506,9 @@ function submitOtp() {
             return;
         }
 
-        tcState.receipt = result.receipt;
-        renderSuccess(result);
-        showStep("success");
+        const focusId = result.receipt && result.receipt.confirmationId;
+        if (focusId) sessionStorage.setItem(STORAGE_PREFIX + "activity_focus", focusId);
+        window.location.href = "activity.html";
     });
 }
 

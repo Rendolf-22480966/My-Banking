@@ -144,6 +144,7 @@
             <section class="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-2 md:gap-3">
                 <button class="quick-action-btn" onclick="openModal('zelle')"><div class="icon">⚡</div><span class="text-[11px] font-semibold text-slate-700" data-brand="pay">FCCU Pay</span></button>
                 <button class="quick-action-btn" onclick="window.location.href='transfer.html'"><div class="icon">💸</div><span class="text-[11px] font-semibold text-slate-700">Transfer</span></button>
+                <button class="quick-action-btn" onclick="window.location.href='activity.html'"><div class="icon">📋</div><span class="text-[11px] font-semibold text-slate-700">Activity</span></button>
                 <button class="quick-action-btn" onclick="openModal('deposit')"><div class="icon">🏦</div><span class="text-[11px] font-semibold text-slate-700">Deposit</span></button>
                 <button class="quick-action-btn" onclick="openModal('billpay')"><div class="icon">🧾</div><span class="text-[11px] font-semibold text-slate-700">Pay Bills</span></button>
                 <button class="quick-action-btn" onclick="openModal('internal')"><div class="icon">🔄</div><span class="text-[11px] font-semibold text-slate-700">Move Money</span></button>
@@ -243,8 +244,9 @@
                     </div>
 
                     <div class="card-premium p-5">
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
-                            Pending <span id="pendingCount" class="badge-pending text-[10px] px-2 py-0.5 rounded-full font-bold"></span>
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center justify-between gap-2">
+                            <span class="flex items-center gap-2">Pending <span id="pendingCount" class="badge-pending text-[10px] px-2 py-0.5 rounded-full font-bold"></span></span>
+                            <a href="activity.html" class="text-[10px] font-semibold normal-case tracking-normal" style="color:var(--accent)">Activity →</a>
                         </h3>
                         <div id="pendingList" class="space-y-2 text-sm"></div>
                     </div>
@@ -359,7 +361,7 @@
             <button class="mobile-nav-item active" onclick="scrollToSection('overview')"><span class="nav-icon">🏠</span> Home</button>
             <button class="mobile-nav-item" onclick="openModal('zelle')"><span class="nav-icon">⚡</span> Pay</button>
             <button class="mobile-nav-item" onclick="window.location.href='transfer.html'"><span class="nav-icon">💸</span> Send</button>
-            <button class="mobile-nav-item" onclick="openModal('billpay')"><span class="nav-icon">🧾</span> Bills</button>
+            <button class="mobile-nav-item" onclick="window.location.href='activity.html'"><span class="nav-icon">📋</span> Activity</button>
             <button class="mobile-nav-item" onclick="openModal('more')"><span class="nav-icon">☰</span> More</button>
         </nav>
     </div>
@@ -501,15 +503,15 @@
                         ? ` · ${formatProcessingCountdown(remain)} left`
                         : "";
                     return `
-                    <div class="flex justify-between items-center p-2.5 ${q === "Processing" ? "bg-blue-50 border-blue-100" : "bg-amber-50 border-amber-100"} rounded-lg border">
+                    <a href="activity.html" class="flex justify-between items-center p-2.5 ${q === "Processing" ? "bg-blue-50 border-blue-100" : "bg-amber-50 border-amber-100"} rounded-lg border hover:opacity-90 transition">
                         <div>
                             <p class="font-semibold text-xs text-slate-800">${tx.desc}</p>
                             <p class="text-[10px] text-slate-500">${tx.date} · ${q}${extra}</p>
                         </div>
                         <span class="font-mono text-xs font-bold">${formatCurrencySigned(tx.amount)}</span>
-                    </div>`;
-                }).join("")
-                : '<p class="text-xs text-slate-400">No pending transactions</p>';
+                    </a>`;
+                }).join("") + `<a href="activity.html" class="block text-center text-xs font-semibold mt-2" style="color:var(--accent)">View all activity →</a>`
+                : '<p class="text-xs text-slate-400">No pending transactions · <a href="activity.html" class="font-semibold" style="color:var(--accent)">Open Activity</a></p>';
 
             const scheduledList = document.getElementById("scheduledBillsList");
             const bills = data.scheduledPayments || [];
@@ -898,8 +900,15 @@
         function processTransactionResult(res) {
             if (!res.success) { showToast(res.message, "error"); return; }
             closeModal();
-            if (res.receipt) runTransactionFlow(res.receipt);
-            else { showToast(res.message, "success"); refreshDashboard(); }
+            if (res.receipt) {
+                if (res.receipt.confirmationId) {
+                    sessionStorage.setItem(STORAGE_PREFIX + "activity_focus", res.receipt.confirmationId);
+                }
+                runTransactionFlow(res.receipt);
+            } else {
+                showToast(res.message, "success");
+                refreshDashboard();
+            }
         }
 
         function runTransactionFlow(receipt) {
@@ -909,24 +918,10 @@
             body.innerHTML = `
                 <div class="tx-spinner"></div>
                 <h3 class="font-display text-lg font-bold text-slate-800">Processing</h3>
-                <p class="text-sm text-slate-500 mt-2">Verifying your request...</p>`;
+                <p class="text-sm text-slate-500 mt-2">Submitting your request...</p>`;
             setTimeout(() => {
-                body.innerHTML = `
-                    <div class="tx-success-icon">✓</div>
-                    <h3 class="font-display text-lg font-bold text-slate-800">Transaction Submitted</h3>
-                    <div class="tx-confirm-id">${receipt.confirmationId}</div>
-                    <p class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-2 rounded-lg">${receipt.status}</p>
-                    <div class="tx-receipt-preview">
-                        <div class="tx-receipt-row"><label>Type</label><span>${receipt.type}</span></div>
-                        <div class="tx-receipt-row"><label>Amount</label><span>${formatCurrencySigned(receipt.amount)}</span></div>
-                        <div class="tx-receipt-row"><label>Description</label><span>${receipt.description}</span></div>
-                        <div class="tx-receipt-row"><label>Status</label><span>${receipt.statusDetail}</span></div>
-                    </div>
-                    <button onclick="showReceiptAndClose()" class="btn-primary w-full py-3 rounded-xl text-sm mt-2">View Receipt</button>
-                    <button onclick="closeTxFlow()" class="w-full py-2.5 rounded-xl text-sm mt-2 text-slate-500 hover:bg-slate-50">Return to Dashboard</button>`;
-                window._lastReceipt = receipt;
-                refreshDashboard();
-            }, 1800);
+                window.location.href = "activity.html";
+            }, 1600);
         }
 
         function showReceiptAndClose() {
