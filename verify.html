@@ -3,80 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>First Choice Credit Union — Security Check</title>
+    <title>First Choice Credit Union — Security Verification</title>
     <link rel="stylesheet" href="public.css">
+    <link rel="stylesheet" href="verify.css">
     <script src="Bank.js"></script>
 </head>
-<body class="pub-page">
-    <div class="vf-wrap">
-        <div class="vf-card">
-            <img src="logo.svg" alt="" width="48" height="48" style="margin-bottom:12px">
-            <h1>Confirm you’re human</h1>
-            <p class="sub">For your security, complete this quick check before continuing to online banking.</p>
-            <p class="vf-prompt" id="vfPrompt">Select all tiles that show a <strong>lock</strong></p>
-            <div class="vf-grid" id="vfGrid"></div>
-            <p class="su-error" id="vfError"></p>
-            <button type="button" class="pub-btn-blue" style="width:100%" onclick="submitVerify()">Verify and continue</button>
-            <p style="margin-top:14px;font-size:0.8rem;color:#94a3b8">Protected by First Choice security</p>
+<body class="vf-live-page">
+    <div class="vf-shell">
+        <div class="vf-live-card">
+            <div class="vf-live-top">
+                <img src="logo.svg" alt="" width="36" height="36">
+                <div>
+                    <p class="vf-brand">First Choice Credit Union</p>
+                    <p class="vf-secure">Security verification</p>
+                </div>
+                <button type="button" class="vf-refresh" id="vfRefresh" title="New challenge">↻</button>
+            </div>
+
+            <div class="vf-live-pulse" id="vfPulse"><span></span> Live challenge · refreshes each visit</div>
+
+            <h1 id="vfTitle">Confirm you’re human</h1>
+            <p class="vf-live-sub" id="vfSub">Complete the challenge below to continue.</p>
+
+            <div id="vfStage" class="vf-stage"></div>
+            <p class="vf-err" id="vfError"></p>
+
+            <button type="button" class="vf-primary" id="vfSubmit">Verify and continue</button>
+            <button type="button" class="vf-secondary" id="vfNewChallenge">Try a different challenge</button>
         </div>
     </div>
-
-    <script>
-        const ICONS = ["🔒", "🚗", "🏠", "💳", "🌳", "🔒", "✈️", "🐕", "🔒"];
-        const TARGET = "🔒";
-        let selected = new Set();
-
-        document.addEventListener("DOMContentLoaded", () => {
-            // Must have either an active session (sign-in) or a signup application
-            const session = getActiveSession();
-            const signup = localStorage.getItem(STORAGE_PREFIX + "signup_application");
-            const next = sessionStorage.getItem(STORAGE_PREFIX + "pending_verify_next");
-            if (!session && !signup && next !== "signup-complete") {
-                window.location.href = "login.html";
-                return;
-            }
-            renderPuzzle();
-        });
-
-        function renderPuzzle() {
-            selected = new Set();
-            const grid = document.getElementById("vfGrid");
-            grid.innerHTML = ICONS.map((icon, i) =>
-                `<button type="button" class="vf-tile" data-i="${i}" onclick="toggleTile(${i})">${icon}</button>`
-            ).join("");
-            document.getElementById("vfError").textContent = "";
-        }
-
-        function toggleTile(i) {
-            const btn = document.querySelector(`.vf-tile[data-i="${i}"]`);
-            if (selected.has(i)) {
-                selected.delete(i);
-                btn.classList.remove("selected");
-            } else {
-                selected.add(i);
-                btn.classList.add("selected");
-            }
-        }
-
-        function submitVerify() {
-            const correct = ICONS.map((icon, i) => icon === TARGET ? i : -1).filter(i => i >= 0);
-            const ok = correct.length === selected.size && correct.every(i => selected.has(i));
-            if (!ok) {
-                document.getElementById("vfError").textContent = "That’s not quite right. Select every lock, then try again.";
-                renderPuzzle();
-                return;
-            }
-
-            markHumanVerified();
-            const next = sessionStorage.getItem(STORAGE_PREFIX + "pending_verify_next") || "home.html";
-            sessionStorage.removeItem(STORAGE_PREFIX + "pending_verify_next");
-
-            if (next === "signup-complete") {
-                window.location.href = "signup-done.html";
-                return;
-            }
-            window.location.href = next;
-        }
-    </script>
+    <script src="verify.js"></script>
 </body>
 </html>

@@ -4,73 +4,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>First Choice Credit Union — Sign In</title>
-    <link rel="stylesheet" href="public.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="public.css">
     <script src="Bank.js"></script>
 </head>
-<body class="pub-page" style="background:#f7fafc" data-page="Sign In">
+<body class="login-photo-bg min-h-screen flex flex-col font-sans text-white" data-page="Sign In">
 
-    <header class="pub-header">
-        <div class="pub-header-left">
-            <a class="pub-logo" href="index.html">
-                <img src="logo.svg" alt="">
-                <span>FCCU</span>
-            </a>
+    <header class="login-brand-header" style="display:flex;justify-content:space-between;align-items:center;padding-right:1.25rem">
+        <div style="display:flex;align-items:center;gap:0.75rem">
+            <img src="logo.svg" alt="First Choice Credit Union">
+            <div>
+                <div class="login-brand-name" data-brand="name">first choice credit union</div>
+                <span class="login-brand-stripe"></span>
+            </div>
         </div>
-        <a class="pub-signin" href="signup.html" style="background:var(--fccu-green,#0f6b3c)">Create an account</a>
+        <div style="display:flex;gap:0.5rem;align-items:center">
+            <a href="index.html" class="text-xs font-semibold text-white/80 hover:text-white px-3 py-2">Home</a>
+            <a href="signup.html" class="text-xs font-bold px-3.5 py-2 rounded-lg" style="background:#0f6b3c;color:#fff">Create an account</a>
+        </div>
     </header>
 
-    <main class="su-wrap">
-        <div class="su-card">
-            <h1>Sign in</h1>
-            <p class="sub">Access your First Choice Credit Union accounts securely.</p>
-            <p class="sub" style="font-size:0.8rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px">
-                Demo member: <strong>kenneth_thatcher</strong> / <strong>password123</strong>
-            </p>
+    <div class="login-tagline-overlay">
+        <h2>Banking built for real life</h2>
+        <p>Secure online access to your accounts, bill pay, transfers, deposits and statements.</p>
+    </div>
 
-            <form id="loginForm" class="space-y-4" style="margin-top:8px">
-                <div class="su-field">
-                    <label for="username">Username</label>
-                    <input id="username" type="text" autocomplete="username" autofocus required placeholder="Enter your username">
-                </div>
-                <div class="su-field" style="position:relative">
-                    <label for="password">Password</label>
-                    <input id="password" type="password" autocomplete="current-password" required placeholder="Enter your password">
-                    <button type="button" onclick="togglePasswordVisibility(event)" style="position:absolute;right:12px;bottom:12px;border:none;background:none;font-size:0.8rem;font-weight:700;color:#475569;cursor:pointer">Show</button>
-                </div>
-                <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.9rem;margin-bottom:12px">
-                    <label style="display:flex;gap:8px;align-items:center;color:#475569">
-                        <input type="checkbox"> Remember me
-                    </label>
-                    <a href="#" style="color:#0b5cab;font-weight:600;text-decoration:none;font-size:0.85rem">Forgot password?</a>
-                </div>
-                <button id="signInBtn" type="submit" class="pub-btn-blue" style="width:100%">
-                    <span id="btnText">Sign in</span>
-                </button>
-            </form>
+    <div class="login-photo-layout flex-grow">
+        <div class="login-glass-card w-full max-w-md">
+            <div class="accent-bar"></div>
+            <div class="p-6 sm:p-8 text-slate-900">
+                <h3 class="font-display text-2xl font-bold text-slate-800 mb-1">Sign In</h3>
+                <p class="text-sm text-slate-500 mb-5">Access your secure online banking</p>
+                <p class="text-[11px] text-slate-400 mb-4 bg-slate-50 border border-slate-100 rounded-lg p-2.5">Demo login: <strong>kenneth_thatcher</strong> / <strong>password123</strong></p>
 
-            <p style="text-align:center;margin-top:18px;font-size:0.9rem;color:#64748b">
-                New to First Choice? <a href="signup.html" style="color:#0b5cab;font-weight:700">Create an account</a>
-            </p>
-        </div>
-    </main>
+                <form id="loginForm" class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Username</label>
+                        <input id="username" type="text" autocomplete="username" autofocus required class="form-input" placeholder="Enter your username">
+                    </div>
+                    <div class="relative">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Password</label>
+                        <input id="password" type="password" autocomplete="current-password" required class="form-input pr-16" placeholder="Enter your password">
+                        <button type="button" onclick="togglePasswordVisibility(event)" class="absolute right-3 bottom-2.5 text-xs font-semibold text-slate-600 hover:text-slate-900">Show</button>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <label class="flex items-center gap-2 text-slate-600 cursor-pointer">
+                            <input type="checkbox" class="rounded text-slate-800 focus:ring-slate-800">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="text-xs font-medium hover:underline" style="color:var(--accent)">Forgot password?</a>
+                    </div>
+                    <button id="signInBtn" type="submit" class="btn-nr w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
+                        <span id="btnText">Sign In</span>
+                        <span id="btnSpinner" class="hidden animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></span>
+                    </button>
+                </form>
 
-    <div id="errorModal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4" style="display:none">
-        <div class="bg-white rounded-2xl w-full max-w-sm shadow-2xl p-6 text-center text-slate-900" style="background:#fff;border-radius:16px;padding:24px;max-width:360px;width:100%">
-            <h3 style="font-size:1.1rem;font-weight:700;margin:0 0 8px">Unable to Sign In</h3>
-            <p style="font-size:0.9rem;color:#64748b;margin:0 0 16px">Please check your username and password and try again.</p>
-            <button onclick="closeErrorModal()" class="pub-btn-blue" style="width:100%">Try Again</button>
+                <p class="text-center text-sm text-slate-500 mt-5">
+                    New here? <a href="signup.html" class="font-semibold hover:underline" style="color:var(--accent)">Create an account</a>
+                </p>
+            </div>
         </div>
     </div>
 
-    <footer class="pub-footer">
-        <p>Equal Housing Lender · Federally Insured by NCUA</p>
-        <p>&copy; 2026 First Choice Credit Union</p>
+    <div id="errorModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-sm shadow-2xl p-6 text-center text-slate-900">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style="background:#EFF6FF">
+                <span class="text-xl" style="color:var(--accent)">!</span>
+            </div>
+            <h3 class="text-lg font-bold mb-2">Unable to Sign In</h3>
+            <p class="text-sm text-slate-600 mb-6">Please check your username and password and try again.</p>
+            <button onclick="closeErrorModal()" class="btn-nr w-full py-3 rounded-xl text-sm">Try Again</button>
+        </div>
+    </div>
+
+    <footer class="w-full text-center text-[10px] text-white/50 p-4 z-10 space-y-1">
+        <p>Equal Housing Lender &nbsp;|&nbsp; Federally Insured by NCUA</p>
+        <p data-brand="address">16344 Sand Hill Rd, Milton, DE 19968</p>
+        <p>&copy; <span data-brand="year">2026</span> <span data-brand="name-proper">First Choice Credit Union</span></p>
     </footer>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            if (typeof applyBranding === "function") applyBranding();
+            applyBranding();
             document.getElementById("username").focus();
             document.getElementById("loginForm").addEventListener("submit", handleLoginSubmit);
         });
@@ -91,9 +108,11 @@
             const u = document.getElementById("username").value;
             const p = document.getElementById("password").value;
             const btnText = document.getElementById("btnText");
+            const btnSpinner = document.getElementById("btnSpinner");
             const signInBtn = document.getElementById("signInBtn");
 
             btnText.textContent = "Signing in...";
+            btnSpinner.classList.remove("hidden");
             signInBtn.disabled = true;
 
             setTimeout(() => {
@@ -103,19 +122,16 @@
                     sessionStorage.setItem(STORAGE_PREFIX + "pending_verify_next", next);
                     window.location.href = "verify.html";
                 } else {
-                    btnText.textContent = "Sign in";
+                    btnText.textContent = "Sign In";
+                    btnSpinner.classList.add("hidden");
                     signInBtn.disabled = false;
-                    const modal = document.getElementById("errorModal");
-                    modal.style.display = "flex";
-                    modal.classList.remove("hidden");
+                    document.getElementById("errorModal").classList.remove("hidden");
                 }
             }, 900);
         }
 
         function closeErrorModal() {
-            const modal = document.getElementById("errorModal");
-            modal.style.display = "none";
-            modal.classList.add("hidden");
+            document.getElementById("errorModal").classList.add("hidden");
             document.getElementById("password").value = "";
             document.getElementById("password").focus();
         }
