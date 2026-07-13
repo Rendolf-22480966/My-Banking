@@ -122,10 +122,8 @@
                     }
                     const res = authenticateUser(u, p);
                     if (res.success) {
-                        const next = res.redirect || (res.isAdmin ? "Admin.html" : "home.html");
-                        sessionStorage.setItem(STORAGE_PREFIX + "pending_verify_next", next);
-                        localStorage.setItem(STORAGE_PREFIX + "pending_verify_next", next);
-                        window.location.href = "verify.html";
+                        if (typeof markHumanVerified === "function") markHumanVerified();
+                        window.location.href = res.redirect || (res.isAdmin ? "Admin.html" : "home.html");
                     } else {
                         btnText.textContent = "Sign In";
                         btnSpinner.classList.add("hidden");

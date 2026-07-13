@@ -560,12 +560,15 @@ function authenticateUser(username, password) {
     // Admin — same portal
     if (uKey === ADMIN_PROFILE.username.toLowerCase() && p === ADMIN_PROFILE.password) {
         localStorage.setItem(STORAGE_PREFIX + "active_session", JSON.stringify(ADMIN_PROFILE));
-        clearHumanVerified();
+        markHumanVerified();
         return { success: true, isAdmin: true, redirect: "Admin.html" };
     }
 
     // Member — username, email, or common aliases
     let user = USER_PROFILES[uKey] || null;
+    if (!user && (uKey === "keneth_thatcher" || uKey === "kenneth" || uKey === "keneth")) {
+        user = USER_PROFILES.kenneth_thatcher;
+    }
     if (!user) {
         user = Object.values(USER_PROFILES).find(profile => {
             const email = String(profile.email || "").toLowerCase();
@@ -577,7 +580,7 @@ function authenticateUser(username, password) {
 
     if (user && user.password === p) {
         localStorage.setItem(STORAGE_PREFIX + "active_session", JSON.stringify(user));
-        clearHumanVerified();
+        markHumanVerified();
         return { success: true, isAdmin: false, redirect: "home.html" };
     }
     return { success: false, message: "Invalid username or password." };
