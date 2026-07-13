@@ -29,6 +29,36 @@ const BANK_BRAND = {
 
 const BANK_INFO = BANK_BRAND;
 
+function applyBranding() {
+    if (typeof BANK_BRAND === "undefined" || typeof document === "undefined") return;
+
+    const displayName = BANK_BRAND.displayName || BANK_BRAND.name;
+    document.querySelectorAll("[data-brand='name']").forEach(el => { el.textContent = displayName; });
+    document.querySelectorAll("[data-brand='name-proper']").forEach(el => { el.textContent = BANK_BRAND.name; });
+    document.querySelectorAll("[data-brand='tagline']").forEach(el => { el.textContent = BANK_BRAND.tagline; });
+    document.querySelectorAll("[data-brand='short']").forEach(el => { el.textContent = BANK_BRAND.shortName; });
+    document.querySelectorAll("[data-brand='pay']").forEach(el => { el.textContent = BANK_BRAND.payProduct; });
+    document.querySelectorAll("[data-brand='mobile']").forEach(el => { el.textContent = BANK_BRAND.mobileAppName; });
+    document.querySelectorAll("[data-brand='phone']").forEach(el => { el.textContent = BANK_BRAND.phone; });
+    document.querySelectorAll("[data-brand='address']").forEach(el => { el.textContent = BANK_BRAND.address; });
+    document.querySelectorAll("[data-brand='year']").forEach(el => { el.textContent = new Date().getFullYear(); });
+
+    const root = document.documentElement;
+    if (BANK_BRAND.colors) {
+        root.style.setProperty("--brand-dark", BANK_BRAND.colors.dark);
+        root.style.setProperty("--brand-mid", BANK_BRAND.colors.mid);
+        root.style.setProperty("--brand-light", BANK_BRAND.colors.light);
+        root.style.setProperty("--gold", BANK_BRAND.colors.gold || BANK_BRAND.colors.accent);
+        if (BANK_BRAND.colors.accent) root.style.setProperty("--accent", BANK_BRAND.colors.accent);
+        if (BANK_BRAND.colors.stone) root.style.setProperty("--stone", BANK_BRAND.colors.stone);
+    }
+
+    if (BANK_BRAND.pageTitle && document.body && !document.querySelector("[data-brand-skip-title]")) {
+        const page = document.body.dataset.page || "Online Banking";
+        document.title = `${BANK_BRAND.name} — ${page}`;
+    }
+}
+
 const USER_PROFILES = {
     kenneth_thatcher: {
         username: "kenneth_thatcher",

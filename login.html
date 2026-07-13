@@ -86,12 +86,6 @@
     </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            applyBranding();
-            document.getElementById("username").focus();
-            document.getElementById("loginForm").addEventListener("submit", handleLoginSubmit);
-        });
-
         function togglePasswordVisibility(event) {
             const passInput = document.getElementById("password");
             if (passInput.type === "password") {
@@ -105,7 +99,7 @@
 
         function handleLoginSubmit(event) {
             event.preventDefault();
-            const u = document.getElementById("username").value;
+            const u = document.getElementById("username").value.trim();
             const p = document.getElementById("password").value;
             const btnText = document.getElementById("btnText");
             const btnSpinner = document.getElementById("btnSpinner");
@@ -121,28 +115,46 @@
                         throw new Error("Banking security module failed to load. Refresh and try again.");
                     }
                     const res = authenticateUser(u, p);
-                    if (res.success) {
+                    if (res && res.success) {
                         if (typeof markHumanVerified === "function") markHumanVerified();
-                        window.location.href = res.redirect || (res.isAdmin ? "Admin.html" : "home.html");
-                    } else {
-                        btnText.textContent = "Sign In";
-                        btnSpinner.classList.add("hidden");
-                        signInBtn.disabled = false;
-                        document.getElementById("errorModal").classList.remove("hidden");
+                        window.location.replace(res.redirect || (res.isAdmin ? "Admin.html" : "home.html"));
+                        return;
                     }
+                    btnText.textContent = "Sign In";
+                    btnSpinner.classList.add("hidden");
+                    signInBtn.disabled = false;
+                    document.getElementById("errorModal").classList.remove("hidden");
                 } catch (err) {
                     btnText.textContent = "Sign In";
                     btnSpinner.classList.add("hidden");
                     signInBtn.disabled = false;
                     alert(err.message || "Sign-in failed. Please refresh the page.");
                 }
-            }, 600);
+            }, 400);
         }
 
         function closeErrorModal() {
             document.getElementById("errorModal").classList.add("hidden");
             document.getElementById("password").value = "";
             document.getElementById("password").focus();
+        }
+
+        function bootLoginPage() {
+            try {
+                if (typeof applyBranding === "function") applyBranding();
+            } catch (e) { /* branding is optional */ }
+
+            const form = document.getElementById("loginForm");
+            if (form) form.addEventListener("submit", handleLoginSubmit);
+
+            const user = document.getElementById("username");
+            if (user) user.focus();
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", bootLoginPage);
+        } else {
+            bootLoginPage();
         }
     </script>
 </body>

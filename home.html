@@ -509,7 +509,7 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            applyBranding();
+            if (typeof applyBranding === "function") applyBranding();
             const session = requireMemberSession();
             if (!session) return;
 
