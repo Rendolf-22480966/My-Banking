@@ -19,7 +19,7 @@
                 <span>FCCU</span>
             </a>
         </div>
-        <a class="pub-signin" href="login.html">Sign in</a>
+        <a class="pub-signin" href="login.html" id="pubSignInLink">Sign in</a>
     </header>
 
     <section class="pub-hero">
@@ -140,6 +140,21 @@
         }
         document.addEventListener("DOMContentLoaded", () => {
             if (typeof applyBranding === "function") applyBranding();
+
+            const session = typeof getActiveSession === "function" ? getActiveSession() : null;
+            if (session && !session.isAdmin) {
+                const link = document.getElementById("pubSignInLink");
+                if (link) {
+                    link.textContent = "Accounts";
+                    link.href = "home.html";
+                }
+                if (typeof initMemberSessionExperience === "function") {
+                    initMemberSessionExperience({ forceWelcome: true });
+                } else if (typeof showWelcomeBackBanner === "function") {
+                    showWelcomeBackBanner(true);
+                    if (typeof startIdleLogoutWatchdog === "function") startIdleLogoutWatchdog();
+                }
+            }
         });
     </script>
 </body>

@@ -257,6 +257,60 @@
     font-weight: 500;
 }
 
+.act-success {
+    margin: 0 0 16px;
+    padding: 16px 18px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    border: 1px solid #6ee7b7;
+    color: #065f46;
+}
+.act-success.hidden { display: none; }
+.act-success h3 {
+    margin: 0 0 4px;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+.act-success p {
+    margin: 0 0 12px;
+    font-size: 0.88rem;
+    line-height: 1.45;
+}
+.act-success-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.act-success-actions button,
+.act-receipt-actions button {
+    border: none;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+.act-btn-primary {
+    background: #0b3d2e;
+    color: #fff;
+}
+.act-btn-secondary {
+    background: #fff;
+    color: #0b3d2e;
+    border: 1px solid #a7f3d0 !important;
+}
+.act-receipt-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+    justify-content: flex-end;
+}
+.act-row.has-receipt .act-row-right {
+    min-width: 120px;
+}
+
 .act-history-head {
     display: flex;
     flex-wrap: wrap;

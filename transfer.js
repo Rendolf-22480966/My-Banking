@@ -515,7 +515,7 @@ function submitOtp() {
 function renderSuccess(result) {
     const r = result.receipt;
     document.getElementById("successSub").textContent =
-        "Your transfer is processing. It will move to pending review in 10 minutes.";
+        "Your transfer is processing for up to 72 hours. An administrator may approve, decline, or mark it pending during that window.";
     const pill = document.getElementById("successPill");
     pill.textContent = "Processing";
     pill.className = "tc-status-pill pending";

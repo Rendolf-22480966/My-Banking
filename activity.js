@@ -6,9 +6,10 @@ let historyNewestFirst = true;
 let historyFilter = "all"; // all | transfer | pay | bills
 
 document.addEventListener("DOMContentLoaded", () => {
-    applyBranding();
+    if (typeof applyBranding === "function") applyBranding();
     const session = requireMemberSession();
     if (!session) return;
+    showApprovalSuccessBanner();
     renderActivity();
     setInterval(renderActivity, 10000);
 });
@@ -50,7 +51,9 @@ function memoLabel(tx) {
     if (meta.bankName) return meta.bankName;
     if (tx.queueStatus === "Processing") {
         const remain = getProcessingRemainingMs(tx);
-        return remain > 0 ? `Processing · ${formatProcessingCountdown(remain)} left` : "Processing";
+        return remain > 0
+            ? `Processing · ${formatProcessingCountdown(remain)} left (72-hour window)`
+            : "Processing";
     }
     if (tx.queueStatus === "Pending") return "Awaiting approval";
     return tx.category || "";
@@ -61,7 +64,44 @@ function highlightId() {
 }
 
 function clearHighlightSoon() {
-    setTimeout(() => sessionStorage.removeItem(STORAGE_PREFIX + "activity_focus"), 8000);
+    setTimeout(() => sessionStorage.removeItem(STORAGE_PREFIX + "activity_focus"), 12000);
+}
+
+function showApprovalSuccessBanner() {
+    const raw = sessionStorage.getItem(STORAGE_PREFIX + "approval_success");
+    if (!raw) return;
+    let info;
+    try { info = JSON.parse(raw); } catch (e) { return; }
+    sessionStorage.removeItem(STORAGE_PREFIX + "approval_success");
+
+    const banner = document.getElementById("actSuccessBanner");
+    if (!banner) return;
+    const amt = moneyAbs(info.amount);
+    const who = info.recipientName ? ` to ${info.recipientName}` : "";
+    banner.classList.remove("hidden");
+    banner.innerHTML = `
+        <h3>Payment successful</h3>
+        <p>Your transfer${who} for <strong>${amt}</strong> was approved and posted.
+        Reference <strong>${info.confirmationId || "—"}</strong>. You can view or print your receipt below.</p>
+        <div class="act-success-actions">
+            <button type="button" class="act-btn-primary" onclick="viewReceiptById('${info.confirmationId || ""}')">View receipt</button>
+            <button type="button" class="act-btn-secondary" onclick="printReceiptById('${info.confirmationId || ""}')">Print receipt</button>
+        </div>`;
+}
+
+function viewReceiptById(confirmationId) {
+    const tx = findTransactionByConfirmation(confirmationId);
+    if (!tx) return showToast("Receipt not found.", "error");
+    openPostedTransactionReceipt(tx);
+}
+
+function printReceiptById(confirmationId) {
+    const tx = findTransactionByConfirmation(confirmationId);
+    if (!tx) return showToast("Receipt not found.", "error");
+    openPostedTransactionReceipt(tx);
+    setTimeout(() => {
+        try { window.focus(); } catch (e) { /* ignore */ }
+    }, 300);
 }
 
 function renderRow(tx, opts = {}) {
@@ -73,8 +113,14 @@ function renderRow(tx, opts = {}) {
     const badge = opts.badge || "flag";
     const badgeText = badge === "pay" ? "P" : "🇺🇸";
     const isNew = highlightId() && String(tx.confirmationId || tx.id) === highlightId();
+    const receiptActions = opts.receipt
+        ? `<div class="act-receipt-actions">
+                <button type="button" class="act-btn-primary" onclick="viewReceiptById('${tx.confirmationId || ""}')">View receipt</button>
+                <button type="button" class="act-btn-secondary" onclick="printReceiptById('${tx.confirmationId || ""}')">Print</button>
+           </div>`
+        : "";
     return `
-        <div class="act-row ${isNew ? "is-new" : ""}">
+        <div class="act-row ${isNew ? "is-new" : ""} ${opts.receipt ? "has-receipt" : ""}">
             <div class="act-avatar">${initialsFromName(name)}
                 <span class="act-avatar-badge ${badge === "pay" ? "pay" : "flag"}">${badgeText}</span>
             </div>
@@ -86,6 +132,7 @@ function renderRow(tx, opts = {}) {
                 <p class="act-row-date">${date}</p>
                 <p class="act-row-amt out">${amt}</p>
                 ${status ? `<p class="act-row-status">${status}</p>` : ""}
+                ${receiptActions}
             </div>
         </div>`;
 }
@@ -130,14 +177,15 @@ function renderActivity() {
     // Processing
     const procTotal = processing.reduce((s, tx) => s + Math.abs(tx.transferAmount != null ? tx.transferAmount : tx.amount), 0);
     document.getElementById("actProcessingTotal").textContent = processing.length
-        ? `${moneyAbs(procTotal)} total`
+        ? `${moneyAbs(procTotal)} total · 72-hour processing window`
         : "";
     document.getElementById("actProcessing").innerHTML = processing.length
         ? processing.map(tx => renderRow(tx, {
             name: recipientLabel(tx),
             sub: memoLabel(tx),
             shortDate: true,
-            badge: "flag"
+            badge: "flag",
+            status: "Processing"
         })).join("")
         : `<p class="act-empty">No transfers processing right now.</p>`;
 
@@ -183,13 +231,15 @@ function renderActivity() {
             const name = (tx.meta && tx.meta.recipientName) || tx.desc.replace(/^Bill Pay — |^Wire to |^FCCU Pay to /i, "");
             const cleanName = name.split("(")[0].trim().toUpperCase();
             const sub = (tx.meta && (tx.meta.memo || tx.meta.description)) || tx.category;
-            const paid = tx.amount > 0 ? "They paid" : "You paid";
+            const paid = tx.status === "Posted" && tx.confirmationId ? "Completed" : (tx.amount > 0 ? "They paid" : "You paid");
             const isPay = /fccu pay|zelle/i.test(tx.category + "");
+            const showReceipt = !!(tx.confirmationId && (tx.receiptReady || tx.status === "Posted") && tx.amount < 0);
             return renderRow(tx, {
                 name: cleanName,
                 sub,
                 badge: isPay ? "pay" : "flag",
-                status: paid
+                status: paid,
+                receipt: showReceipt
             });
         }).join("")
         : `<p class="act-empty">No recent history in this filter.</p>`;

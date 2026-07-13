@@ -87,9 +87,11 @@ const ADMIN_PROFILE = {
     isAdmin: true
 };
 
-const DATA_VERSION = 7;
+const DATA_VERSION = 8;
 const STORAGE_PREFIX = "fccu_";
-const TRANSFER_PROCESSING_MS = 10 * 60 * 1000; // 10 minutes Processing → Pending
+const TRANSFER_PROCESSING_MS = 72 * 60 * 60 * 1000; // 72 hours Processing → Pending
+const IDLE_TIMEOUT_MS = 4 * 60 * 1000; // auto sign-out after 4 minutes idle
+const WELCOME_BACK_MS = 200 * 1000; // welcome banner stays at least 200 seconds
 const VALID_TRANSFER_OTPS = ["224809", "453107", "109867", "435698", "994532"];
 
 function buildTransactionHistory() {
@@ -591,6 +593,7 @@ function authenticateUser(username, password) {
     if (uKey === ADMIN_PROFILE.username.toLowerCase() && p === ADMIN_PROFILE.password) {
         localStorage.setItem(STORAGE_PREFIX + "active_session", JSON.stringify(ADMIN_PROFILE));
         markHumanVerified();
+        bumpSessionActivity();
         return { success: true, isAdmin: true, redirect: "Admin.html" };
     }
 
@@ -611,6 +614,8 @@ function authenticateUser(username, password) {
     if (user && user.password === p) {
         localStorage.setItem(STORAGE_PREFIX + "active_session", JSON.stringify(user));
         markHumanVerified();
+        bumpSessionActivity();
+        sessionStorage.setItem(STORAGE_PREFIX + "welcome_back_until", String(Date.now() + WELCOME_BACK_MS));
         return { success: true, isAdmin: false, redirect: "home.html" };
     }
     return { success: false, message: "Invalid username or password." };
@@ -652,6 +657,7 @@ function requireAdminSession() {
         window.location.href = "verify.html";
         return null;
     }
+    startIdleLogoutWatchdog();
     return session;
 }
 
@@ -670,15 +676,134 @@ function requireMemberSession() {
         window.location.href = "verify.html";
         return null;
     }
+    initMemberSessionExperience({ forceWelcome: false });
     return session;
 }
 
-function terminateSession() {
+function terminateSession(opts) {
+    const options = opts || {};
     localStorage.removeItem(STORAGE_PREFIX + "active_session");
     localStorage.removeItem(STORAGE_PREFIX + "pending_verify_next");
+    localStorage.removeItem(STORAGE_PREFIX + "idle_last_activity");
     sessionStorage.removeItem(STORAGE_PREFIX + "pending_verify_next");
+    sessionStorage.removeItem(STORAGE_PREFIX + "welcome_back_until");
     clearHumanVerified();
-    window.location.href = "index.html";
+    if (options.idle) {
+        sessionStorage.setItem(STORAGE_PREFIX + "session_expired", "1");
+        window.location.href = "login.html";
+        return;
+    }
+    window.location.href = options.toLogin ? "login.html" : "index.html";
+}
+
+function bumpSessionActivity() {
+    localStorage.setItem(STORAGE_PREFIX + "idle_last_activity", String(Date.now()));
+}
+
+function startIdleLogoutWatchdog() {
+    if (window.__fccuIdleWatch) return;
+    bumpSessionActivity();
+    const events = ["mousemove", "mousedown", "keydown", "touchstart", "scroll", "click"];
+    const onActivity = () => bumpSessionActivity();
+    events.forEach(evt => document.addEventListener(evt, onActivity, { passive: true }));
+    window.__fccuIdleWatch = setInterval(() => {
+        const session = getActiveSession();
+        if (!session) return;
+        const last = parseInt(localStorage.getItem(STORAGE_PREFIX + "idle_last_activity") || "0", 10);
+        if (last && Date.now() - last >= IDLE_TIMEOUT_MS) {
+            clearInterval(window.__fccuIdleWatch);
+            window.__fccuIdleWatch = null;
+            terminateSession({ idle: true });
+        }
+    }, 5000);
+}
+
+function showWelcomeBackBanner(force) {
+    const session = getActiveSession();
+    if (!session || session.isAdmin) return;
+
+    const firstName = String(session.fullName || "Kenneth").split(" ")[0];
+    const untilKey = STORAGE_PREFIX + "welcome_back_until";
+    let until = parseInt(sessionStorage.getItem(untilKey) || "0", 10);
+    const now = Date.now();
+    if (force || !until || until < now) {
+        until = now + WELCOME_BACK_MS;
+        sessionStorage.setItem(untilKey, String(until));
+    }
+    const remaining = Math.max(0, until - now);
+    if (remaining <= 0) return;
+
+    let banner = document.getElementById("fccuWelcomeBack");
+    if (!banner) {
+        banner = document.createElement("div");
+        banner.id = "fccuWelcomeBack";
+        banner.setAttribute("role", "status");
+        banner.innerHTML = `
+            <div class="fccu-welcome-inner">
+                <div class="fccu-welcome-copy">
+                    <p class="fccu-welcome-kicker">Secure session active</p>
+                    <p class="fccu-welcome-title">Welcome back, <strong>${firstName}</strong></p>
+                    <p class="fccu-welcome-sub">You're signed in to First Choice Credit Union Online Banking.</p>
+                </div>
+                <div class="fccu-welcome-meta">
+                    <span id="fccuWelcomeTimer"></span>
+                    <a class="fccu-welcome-cta" href="home.html">Go to accounts</a>
+                </div>
+            </div>`;
+        document.body.appendChild(banner);
+
+        if (!document.getElementById("fccuWelcomeStyles")) {
+            const style = document.createElement("style");
+            style.id = "fccuWelcomeStyles";
+            style.textContent = `
+                #fccuWelcomeBack{position:fixed;inset:0 0 auto 0;z-index:99990;background:linear-gradient(135deg,#0b3d2e 0%,#145a43 55%,#1a6b4f 100%);color:#fff;box-shadow:0 12px 40px rgba(11,61,46,.35);animation:fccuWelcomeIn .45s ease}
+                @keyframes fccuWelcomeIn{from{transform:translateY(-100%);opacity:0}to{transform:none;opacity:1}}
+                .fccu-welcome-inner{max-width:1100px;margin:0 auto;padding:1rem 1.25rem;display:flex;gap:1rem;align-items:center;justify-content:space-between;flex-wrap:wrap}
+                .fccu-welcome-kicker{margin:0;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;font-weight:700}
+                .fccu-welcome-title{margin:.15rem 0;font-size:1.35rem;font-weight:600;letter-spacing:-.02em}
+                .fccu-welcome-title strong{font-weight:800}
+                .fccu-welcome-sub{margin:0;font-size:.85rem;opacity:.88}
+                .fccu-welcome-meta{display:flex;align-items:center;gap:.75rem}
+                #fccuWelcomeTimer{font-size:11px;font-variant-numeric:tabular-nums;opacity:.8;min-width:4.5rem;text-align:right}
+                .fccu-welcome-cta{display:inline-flex;align-items:center;padding:.55rem .95rem;border-radius:999px;background:#fff;color:#0b3d2e;font-size:.8rem;font-weight:700;text-decoration:none}
+                body.fccu-welcome-active{padding-top:96px}
+                @media (max-width:640px){.fccu-welcome-inner{padding:.85rem 1rem}.fccu-welcome-title{font-size:1.1rem}body.fccu-welcome-active{padding-top:120px}}
+            `;
+            document.head.appendChild(style);
+        }
+    }
+
+    document.body.classList.add("fccu-welcome-active");
+    const timerEl = document.getElementById("fccuWelcomeTimer");
+    const tick = () => {
+        const left = Math.max(0, until - Date.now());
+        if (timerEl) {
+            const sec = Math.ceil(left / 1000);
+            const m = Math.floor(sec / 60);
+            const s = sec % 60;
+            timerEl.textContent = `${m}:${String(s).padStart(2, "0")}`;
+        }
+        if (left <= 0) {
+            clearInterval(window.__fccuWelcomeTick);
+            window.__fccuWelcomeTick = null;
+            banner.remove();
+            document.body.classList.remove("fccu-welcome-active");
+            sessionStorage.removeItem(untilKey);
+        }
+    };
+    tick();
+    if (window.__fccuWelcomeTick) clearInterval(window.__fccuWelcomeTick);
+    window.__fccuWelcomeTick = setInterval(tick, 1000);
+}
+
+/** Call on authenticated banking pages (and index when signed in). */
+function initMemberSessionExperience(opts) {
+    const options = opts || {};
+    const session = getActiveSession();
+    if (!session || session.isAdmin) return session;
+    startIdleLogoutWatchdog();
+    showWelcomeBackBanner(!!options.forceWelcome);
+    return session;
 }
 
 // ── Utilities ──
@@ -849,8 +974,9 @@ function verifyTransferOtp(code) {
 }
 
 /**
- * After OTP/submit: every transfer stays in Processing for 10 minutes,
+ * After OTP/submit: every transfer stays in Processing for 72 hours,
  * then automatically moves to Pending until an admin approves it.
+ * Admins may approve, decline, or move to Pending at any time during processing.
  */
 function applyProcessingPromotions(data) {
     if (!data || !Array.isArray(data.pendingTransactions)) return false;
@@ -867,7 +993,7 @@ function applyProcessingPromotions(data) {
             id: Date.now() + Math.floor(Math.random() * 1000),
             date: new Date().toISOString().split("T")[0],
             title: "Transfer Pending Review",
-            body: `${tx.desc} (Ref ${tx.confirmationId || "—"}) is awaiting administrator approval.`,
+            body: `${tx.desc} (Ref ${tx.confirmationId || "—"}) is awaiting administrator approval after the 72-hour processing window.`,
             read: false
         });
         changed = true;
@@ -882,15 +1008,19 @@ function getProcessingRemainingMs(tx) {
 }
 
 function formatProcessingCountdown(ms) {
-    const totalSec = Math.ceil(ms / 1000);
-    const m = Math.floor(totalSec / 60);
+    const totalSec = Math.max(0, Math.ceil(ms / 1000));
+    const d = Math.floor(totalSec / 86400);
+    const h = Math.floor((totalSec % 86400) / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
     const s = totalSec % 60;
+    if (d > 0) return `${d}d ${h}h ${m}m`;
+    if (h > 0) return `${h}h ${m}m`;
     return `${m}:${String(s).padStart(2, "0")}`;
 }
 
 /**
  * Submit transfer from Transfer Center after OTP.
- * Any amount: Processing (10 min) → Pending → admin approval.
+ * Any amount: Processing (72 hours) → Pending → admin approval.
  */
 function submitTransferCenter(payload, session) {
     const amount = parseFloat(payload.amount);
@@ -980,7 +1110,7 @@ function submitTransferCenter(payload, session) {
         id: Date.now(),
         date: pending.date,
         title: "Transfer Processing",
-        body: `${formatCurrency(amount)} to ${payload.recipientName} (${payload.bankName}) is processing. It will move to pending review in 10 minutes. Ref ${confirmationId}.`,
+        body: `${formatCurrency(amount)} to ${payload.recipientName} (${payload.bankName}) is processing. Administrator review is available within 72 hours. Ref ${confirmationId}.`,
         read: false
     });
 
@@ -1001,7 +1131,7 @@ function submitTransferCenter(payload, session) {
             date: pending.date,
             time: pending.time,
             status: "PROCESSING",
-            statusDetail: "Processing — moves to pending review in 10 minutes",
+            statusDetail: "Processing — up to 72 hours before pending review",
             accountFrom: maskAccount(data.accountNumber),
             routingNumber: data.routingNumber,
             initiatedBy: session.fullName,
@@ -1010,7 +1140,7 @@ function submitTransferCenter(payload, session) {
             recipientBank: payload.bankName,
             recipientAccount: payload.accountMasked || ("****" + String(payload.accountNumber).slice(-4)),
             holdRef: "N/A",
-            message: "Your transfer is processing. After 10 minutes it will move to pending until an administrator approves it. Funds will not leave your account until approval."
+            message: "Your transfer is processing for up to 72 hours. An administrator may approve, decline, or mark it pending during that window. Funds will not leave your account until approval."
         }
     };
 }
@@ -1122,7 +1252,7 @@ function queueTransaction(txData, session, forceHold) {
         title: onHold ? "Transaction Pending Review" : "Transaction Processing",
         body: onHold
             ? `${txData.desc} is awaiting administrator approval. Ref ${confirmationId}.`
-            : `${txData.desc} is processing. It will move to pending review in 10 minutes. Ref ${confirmationId}.`,
+            : `${txData.desc} is processing for up to 72 hours. Ref ${confirmationId}.`,
         read: false
     });
 
@@ -1141,14 +1271,14 @@ function queueTransaction(txData, session, forceHold) {
             status: onHold ? "PENDING REVIEW" : "PROCESSING",
             statusDetail: onHold
                 ? "Awaiting Administrator Approval"
-                : "Processing — moves to pending review in 10 minutes",
+                : "Processing — up to 72 hours",
             accountFrom: maskAccount(data.accountNumber),
             routingNumber: data.routingNumber,
             initiatedBy: session.fullName,
             holdRef: onHold ? (data.holdReason || "Admin Review") : "N/A",
             message: onHold
                 ? "Your transaction has been received and is pending administrator approval."
-                : "Your transaction is processing. After 10 minutes it will move to pending until an administrator approves it. Funds will not post until approval."
+                : "Your transaction is processing for up to 72 hours. An administrator may approve, decline, or mark it pending during that window. Funds will not post until approval."
         }
     };
 }
@@ -1274,17 +1404,23 @@ function approveTransaction(index) {
     const approved = data.pendingTransactions.splice(index, 1)[0];
     if (!approved) return null;
 
-    data.transactions.unshift({
+    const posted = {
         id: generateTxId(),
-        date: approved.date,
+        date: getTodayDate(),
+        postedAt: new Date().toISOString(),
         desc: approved.desc,
         category: approved.category || "Transfer",
         authBy: approved.authBy,
         avatar: approved.avatar,
         amount: approved.amount,
+        transferAmount: approved.transferAmount,
+        fee: approved.fee,
         status: "Posted",
-        confirmationId: approved.confirmationId
-    });
+        confirmationId: approved.confirmationId,
+        meta: approved.meta || {},
+        receiptReady: true
+    };
+    data.transactions.unshift(posted);
 
     data.availableBalance += approved.amount;
     data.currentBalance += approved.amount;
@@ -1301,19 +1437,102 @@ function approveTransaction(index) {
         id: Date.now(),
         date: new Date().toISOString().split("T")[0],
         title: "Transaction Approved",
-        body: `${approved.desc} was approved and posted. Ref ${approved.confirmationId || "—"}.`,
+        body: `${approved.desc} was approved and posted. Ref ${approved.confirmationId || "—"}. View and print your receipt in Activity.`,
         read: false
     });
 
     updateAccountData(data);
+
+    try {
+        sessionStorage.setItem(STORAGE_PREFIX + "approval_success", JSON.stringify({
+            confirmationId: approved.confirmationId,
+            desc: approved.desc,
+            amount: approved.amount,
+            fee: approved.fee || 0,
+            recipientName: (approved.meta && approved.meta.recipientName) || "",
+            date: posted.date,
+            time: approved.time || new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })
+        }));
+        sessionStorage.setItem(STORAGE_PREFIX + "activity_focus", approved.confirmationId || "");
+    } catch (e) { /* ignore */ }
+
     return approved;
+}
+
+function markTransactionPending(index) {
+    const data = getAccountData();
+    const tx = data.pendingTransactions[index];
+    if (!tx) return null;
+    tx.queueStatus = "Pending";
+    tx.status = "Pending — Awaiting Admin";
+    tx.processingStartedAt = null;
+    data.notifications = data.notifications || [];
+    data.notifications.unshift({
+        id: Date.now(),
+        date: getTodayDate(),
+        title: "Transfer Marked Pending",
+        body: `${tx.desc} (Ref ${tx.confirmationId || "—"}) was moved to pending review by an administrator.`,
+        read: false
+    });
+    updateAccountData(data);
+    return tx;
 }
 
 function rejectTransaction(index) {
     const data = getAccountData();
     const rejected = data.pendingTransactions.splice(index, 1)[0];
+    if (!rejected) return null;
+    data.notifications = data.notifications || [];
+    data.notifications.unshift({
+        id: Date.now(),
+        date: getTodayDate(),
+        title: "Transaction Declined",
+        body: `${rejected.desc} was declined. Ref ${rejected.confirmationId || "—"}. No funds were posted.`,
+        read: false
+    });
     updateAccountData(data);
     return rejected;
+}
+
+function buildReceiptFromPostedTx(tx) {
+    if (!tx) return null;
+    const data = getAccountData();
+    const meta = tx.meta || {};
+    const amount = tx.transferAmount != null ? -Math.abs(tx.transferAmount) : tx.amount;
+    return {
+        confirmationId: tx.confirmationId || tx.id,
+        type: tx.category || "Transfer",
+        description: tx.desc,
+        amount,
+        fee: tx.fee || meta.fee || 0,
+        totalDebit: Math.abs(tx.amount),
+        date: tx.date,
+        time: tx.time || "",
+        status: "COMPLETED",
+        statusDetail: "Approved and posted to your account",
+        accountFrom: maskAccount(meta.fromAccountNumber || data.accountNumber),
+        routingNumber: data.routingNumber,
+        initiatedBy: tx.authBy || "Kenneth Thatcher",
+        recipientName: meta.recipientName || "",
+        recipientAddress: meta.recipientAddress || "",
+        recipientBank: meta.bankName || "",
+        recipientAccount: meta.accountMasked || (meta.account ? ("****" + String(meta.account).slice(-4)) : ""),
+        holdRef: "N/A",
+        message: "This transaction was approved by First Choice Credit Union and posted successfully. Retain this receipt for your records."
+    };
+}
+
+function openPostedTransactionReceipt(tx) {
+    const receipt = buildReceiptFromPostedTx(tx);
+    if (!receipt) return;
+    if (typeof openTransferReceipt === "function") openTransferReceipt(receipt);
+    else if (typeof openTransactionReceipt === "function") openTransactionReceipt(receipt);
+}
+
+function findTransactionByConfirmation(confirmationId) {
+    if (!confirmationId) return null;
+    const data = getAccountData();
+    return (data.transactions || []).find(tx => String(tx.confirmationId) === String(confirmationId)) || null;
 }
 
 // ── Statements ──
