@@ -554,22 +554,33 @@ function resetDemoData() {
 
 function authenticateUser(username, password) {
     const u = String(username || "").trim();
-    const p = String(password || "");
+    const p = String(password || "").trim();
+    const uKey = u.toLowerCase();
 
-    // Same login portal — admin credentials route to Admin panel
-    if (u.toLowerCase() === ADMIN_PROFILE.username.toLowerCase() && p === ADMIN_PROFILE.password) {
+    // Admin — same portal
+    if (uKey === ADMIN_PROFILE.username.toLowerCase() && p === ADMIN_PROFILE.password) {
         localStorage.setItem(STORAGE_PREFIX + "active_session", JSON.stringify(ADMIN_PROFILE));
         clearHumanVerified();
         return { success: true, isAdmin: true, redirect: "Admin.html" };
     }
 
-    const user = USER_PROFILES[u.toLowerCase()];
+    // Member — username, email, or common aliases
+    let user = USER_PROFILES[uKey] || null;
+    if (!user) {
+        user = Object.values(USER_PROFILES).find(profile => {
+            const email = String(profile.email || "").toLowerCase();
+            const uname = String(profile.username || "").toLowerCase();
+            const full = String(profile.fullName || "").toLowerCase();
+            return uKey === email || uKey === uname || uKey === full || uKey === full.replace(/\s+/g, "_");
+        }) || null;
+    }
+
     if (user && user.password === p) {
         localStorage.setItem(STORAGE_PREFIX + "active_session", JSON.stringify(user));
         clearHumanVerified();
         return { success: true, isAdmin: false, redirect: "home.html" };
     }
-    return { success: false };
+    return { success: false, message: "Invalid username or password." };
 }
 
 function getActiveSession() {
@@ -578,14 +589,17 @@ function getActiveSession() {
 }
 
 function isHumanVerified() {
-    return sessionStorage.getItem(STORAGE_PREFIX + "human_verified") === "1";
+    return localStorage.getItem(STORAGE_PREFIX + "human_verified") === "1"
+        || sessionStorage.getItem(STORAGE_PREFIX + "human_verified") === "1";
 }
 
 function markHumanVerified() {
+    localStorage.setItem(STORAGE_PREFIX + "human_verified", "1");
     sessionStorage.setItem(STORAGE_PREFIX + "human_verified", "1");
 }
 
 function clearHumanVerified() {
+    localStorage.setItem(STORAGE_PREFIX + "human_verified", "0");
     sessionStorage.setItem(STORAGE_PREFIX + "human_verified", "0");
 }
 
@@ -628,6 +642,8 @@ function requireMemberSession() {
 
 function terminateSession() {
     localStorage.removeItem(STORAGE_PREFIX + "active_session");
+    localStorage.removeItem(STORAGE_PREFIX + "pending_verify_next");
+    sessionStorage.removeItem(STORAGE_PREFIX + "pending_verify_next");
     clearHumanVerified();
     window.location.href = "index.html";
 }

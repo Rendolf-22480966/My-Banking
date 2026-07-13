@@ -116,18 +116,29 @@
             signInBtn.disabled = true;
 
             setTimeout(() => {
-                const res = authenticateUser(u, p);
-                if (res.success) {
-                    const next = res.redirect || (res.isAdmin ? "Admin.html" : "home.html");
-                    sessionStorage.setItem(STORAGE_PREFIX + "pending_verify_next", next);
-                    window.location.href = "verify.html";
-                } else {
+                try {
+                    if (typeof authenticateUser !== "function") {
+                        throw new Error("Banking security module failed to load. Refresh and try again.");
+                    }
+                    const res = authenticateUser(u, p);
+                    if (res.success) {
+                        const next = res.redirect || (res.isAdmin ? "Admin.html" : "home.html");
+                        sessionStorage.setItem(STORAGE_PREFIX + "pending_verify_next", next);
+                        localStorage.setItem(STORAGE_PREFIX + "pending_verify_next", next);
+                        window.location.href = "verify.html";
+                    } else {
+                        btnText.textContent = "Sign In";
+                        btnSpinner.classList.add("hidden");
+                        signInBtn.disabled = false;
+                        document.getElementById("errorModal").classList.remove("hidden");
+                    }
+                } catch (err) {
                     btnText.textContent = "Sign In";
                     btnSpinner.classList.add("hidden");
                     signInBtn.disabled = false;
-                    document.getElementById("errorModal").classList.remove("hidden");
+                    alert(err.message || "Sign-in failed. Please refresh the page.");
                 }
-            }, 900);
+            }, 600);
         }
 
         function closeErrorModal() {
