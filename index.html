@@ -2,13 +2,145 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=login.html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>First Choice Credit Union</title>
-    <link rel="canonical" href="login.html">
-    <script>window.location.replace("login.html");</script>
+    <link rel="stylesheet" href="public.css">
+    <script src="Bank.js"></script>
 </head>
-<body style="font-family:system-ui,sans-serif;background:#E8EAED;color:#3D4F5F;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0">
-    <p>Opening First Choice Credit Union… <a href="login.html">Continue to Sign In</a></p>
+<body class="pub-page">
+
+    <header class="pub-header">
+        <div class="pub-header-left">
+            <button type="button" class="pub-menu-btn" onclick="toggleMenu(true)" aria-label="Open menu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <a class="pub-logo" href="index.html">
+                <img src="logo.svg" alt="">
+                <span>FCCU</span>
+            </a>
+        </div>
+        <a class="pub-signin" href="login.html">Sign in</a>
+    </header>
+
+    <section class="pub-hero">
+        <div class="pub-hero-inner">
+            <p class="pub-hero-kicker">Enjoy <strong>$250</strong></p>
+            <h1>New First Choice checking customers</h1>
+            <p>Open a Business Advantage Checking account with qualifying activities. Membership eligibility required.</p>
+            <div class="pub-cta-row">
+                <a class="pub-btn-green" href="signup.html">Create an account</a>
+                <a class="pub-btn-outline" href="login.html">Sign in</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="pub-section">
+        <h2>Choose what's right for you</h2>
+        <div class="pub-services">
+            <a class="pub-service" href="signup.html">
+                <div class="pub-service-icon"><svg viewBox="0 0 48 48"><rect x="10" y="14" width="28" height="22" rx="2"/><path d="M16 20h16M16 26h10"/></svg></div>
+                Checking
+            </a>
+            <a class="pub-service" href="signup.html">
+                <div class="pub-service-icon"><svg viewBox="0 0 48 48"><path d="M24 10c-6 0-10 4-10 10 0 8 10 18 10 18s10-10 10-18c0-6-4-10-10-10z"/><circle cx="24" cy="20" r="3"/></svg></div>
+                Savings
+            </a>
+            <a class="pub-service" href="signup.html">
+                <div class="pub-service-icon"><svg viewBox="0 0 48 48"><rect x="8" y="16" width="32" height="20" rx="2"/><path d="M8 22h32"/></svg></div>
+                Credit cards
+            </a>
+            <a class="pub-service" href="signup.html">
+                <div class="pub-service-icon"><svg viewBox="0 0 48 48"><path d="M12 34V18l12-6 12 6v16"/><path d="M20 34v-8h8v8"/></svg></div>
+                Business
+            </a>
+            <a class="pub-service" href="signup.html">
+                <div class="pub-service-icon"><svg viewBox="0 0 48 48"><path d="M8 34h32L36 18H12L8 34z"/><path d="M16 18l2-6h12l2 6"/></svg></div>
+                Home loans
+            </a>
+            <a class="pub-service" href="signup.html">
+                <div class="pub-service-icon"><svg viewBox="0 0 48 48"><path d="M10 30h28v4H10z"/><path d="M14 30l4-12h12l4 12"/><circle cx="18" cy="34" r="2"/><circle cx="30" cy="34" r="2"/></svg></div>
+                Auto
+            </a>
+            <a class="pub-service" href="signup.html">
+                <div class="pub-service-icon"><svg viewBox="0 0 48 48"><path d="M10 34V14h8l6 8 6-8h8v20"/></svg></div>
+                Investing
+            </a>
+            <a class="pub-service" href="login.html">
+                <div class="pub-service-icon"><svg viewBox="0 0 48 48"><circle cx="18" cy="20" r="5"/><circle cx="30" cy="20" r="5"/><path d="M10 34c2-6 6-8 8-8s6 2 8 4 4 4 8 4 6 2 8 8"/></svg></div>
+                Schedule a meeting
+            </a>
+        </div>
+    </section>
+
+    <div class="pub-cards">
+        <article class="pub-card">
+            <div class="pub-card-head">
+                <span>FCCU Credit Cards</span>
+                <svg viewBox="0 0 32 32"><rect x="4" y="8" width="24" height="16" rx="2"/><path d="M4 14h24"/></svg>
+            </div>
+            <div class="pub-card-body">
+                <h3>See if you’re preapproved</h3>
+                <p>Learn which First Choice credit cards you may qualify for in just a few moments. Checking does not affect your credit score.</p>
+                <a class="pub-btn-blue" href="signup.html">Get started</a>
+            </div>
+        </article>
+
+        <article class="pub-card">
+            <div class="pub-card-head">
+                <span>FCCU Auto</span>
+                <svg viewBox="0 0 32 32"><path d="M4 20h24l-2-8H6L4 20z"/><circle cx="10" cy="22" r="2"/><circle cx="22" cy="22" r="2"/></svg>
+            </div>
+            <div class="pub-card-body">
+                <h3>Finance your next ride with FCCU Auto</h3>
+                <p>Apply online in just minutes and secure your rate and financing terms for 30 days.</p>
+                <a class="pub-btn-blue" href="signup.html">Apply now</a>
+            </div>
+        </article>
+
+        <article class="pub-card">
+            <div class="pub-card-head">
+                <span>Business Banking</span>
+                <svg viewBox="0 0 32 32"><path d="M6 26V10h8v16M14 14h12v12H6"/></svg>
+            </div>
+            <div class="pub-card-body">
+                <h3>Banking built for Kenny Construction and growing businesses</h3>
+                <p>Open a Business Advantage Checking account, monitor cash flow, and link tools like Cash App from one secure portal.</p>
+                <a class="pub-btn-blue" href="signup.html">Open a business account</a>
+            </div>
+        </article>
+    </div>
+
+    <footer class="pub-footer">
+        <p><a href="login.html">Sign in</a> · <a href="signup.html">Create an account</a></p>
+        <p>Equal Housing Lender · Federally Insured by NCUA</p>
+        <p data-brand="address">16344 Sand Hill Rd, Milton, DE 19968</p>
+        <p>&copy; <span data-brand="year">2026</span> First Choice Credit Union</p>
+    </footer>
+
+    <div id="pubDrawer" class="pub-drawer" aria-hidden="true">
+        <div class="pub-drawer-backdrop" onclick="toggleMenu(false)"></div>
+        <nav class="pub-drawer-panel">
+            <button type="button" class="pub-menu-btn" onclick="toggleMenu(false)" aria-label="Close">✕</button>
+            <a href="login.html" onclick="toggleMenu(false)">Sign in</a>
+            <a href="signup.html" onclick="toggleMenu(false)">Create an account</a>
+            <a href="signup.html" onclick="toggleMenu(false)">Checking</a>
+            <a href="signup.html" onclick="toggleMenu(false)">Savings</a>
+            <a href="signup.html" onclick="toggleMenu(false)">Business</a>
+            <a href="signup.html" onclick="toggleMenu(false)">Home loans</a>
+            <a href="signup.html" onclick="toggleMenu(false)">Auto</a>
+            <a href="signup.html" onclick="toggleMenu(false)">Credit cards</a>
+        </nav>
+    </div>
+
+    <script>
+        function toggleMenu(open) {
+            const d = document.getElementById("pubDrawer");
+            d.classList.toggle("open", open);
+            d.setAttribute("aria-hidden", open ? "false" : "true");
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof applyBranding === "function") applyBranding();
+        });
+    </script>
 </body>
 </html>

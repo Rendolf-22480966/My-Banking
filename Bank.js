@@ -559,12 +559,14 @@ function authenticateUser(username, password) {
     // Same login portal — admin credentials route to Admin panel
     if (u.toLowerCase() === ADMIN_PROFILE.username.toLowerCase() && p === ADMIN_PROFILE.password) {
         localStorage.setItem(STORAGE_PREFIX + "active_session", JSON.stringify(ADMIN_PROFILE));
+        clearHumanVerified();
         return { success: true, isAdmin: true, redirect: "Admin.html" };
     }
 
     const user = USER_PROFILES[u.toLowerCase()];
     if (user && user.password === p) {
         localStorage.setItem(STORAGE_PREFIX + "active_session", JSON.stringify(user));
+        clearHumanVerified();
         return { success: true, isAdmin: false, redirect: "home.html" };
     }
     return { success: false };
@@ -573,6 +575,18 @@ function authenticateUser(username, password) {
 function getActiveSession() {
     const session = localStorage.getItem(STORAGE_PREFIX + "active_session");
     return session ? JSON.parse(session) : null;
+}
+
+function isHumanVerified() {
+    return sessionStorage.getItem(STORAGE_PREFIX + "human_verified") === "1";
+}
+
+function markHumanVerified() {
+    sessionStorage.setItem(STORAGE_PREFIX + "human_verified", "1");
+}
+
+function clearHumanVerified() {
+    sessionStorage.setItem(STORAGE_PREFIX + "human_verified", "0");
 }
 
 function isAdminSession(session) {
@@ -584,6 +598,11 @@ function requireAdminSession() {
     const session = getActiveSession();
     if (!session || !session.isAdmin) {
         window.location.href = "login.html";
+        return null;
+    }
+    if (!isHumanVerified()) {
+        sessionStorage.setItem(STORAGE_PREFIX + "pending_verify_next", "Admin.html");
+        window.location.href = "verify.html";
         return null;
     }
     return session;
@@ -599,12 +618,18 @@ function requireMemberSession() {
         window.location.href = "Admin.html";
         return null;
     }
+    if (!isHumanVerified()) {
+        sessionStorage.setItem(STORAGE_PREFIX + "pending_verify_next", "home.html");
+        window.location.href = "verify.html";
+        return null;
+    }
     return session;
 }
 
 function terminateSession() {
     localStorage.removeItem(STORAGE_PREFIX + "active_session");
-    window.location.href = "login.html";
+    clearHumanVerified();
+    window.location.href = "index.html";
 }
 
 // ── Utilities ──

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Choice Credit Union — Application Received</title>
+    <link rel="stylesheet" href="public.css">
+    <script src="Bank.js"></script>
+</head>
+<body class="pub-page">
+    <header class="pub-header">
+        <a class="pub-logo" href="index.html">
+            <img src="logo.svg" alt="">
+            <span>FCCU</span>
+        </a>
+        <a class="pub-signin" href="login.html">Sign in</a>
+    </header>
+    <main class="su-wrap">
+        <div class="su-card" style="text-align:center">
+            <div style="font-size:2.4rem;margin-bottom:10px">✓</div>
+            <h1>Application received</h1>
+            <p class="sub">Thank you. Your membership application has been submitted for review. You will receive an email when your account is ready.</p>
+            <p class="sub" id="appRef" style="font-family:ui-monospace,monospace;font-size:0.85rem"></p>
+            <p class="sub">For this demonstration, you may sign in with the member credentials provided on the sign-in page.</p>
+            <div class="su-actions" style="justify-content:center">
+                <a class="pub-btn-blue" href="login.html">Go to Sign in</a>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof applyBranding === "function") applyBranding();
+            const raw = localStorage.getItem((typeof STORAGE_PREFIX !== "undefined" ? STORAGE_PREFIX : "fccu_") + "signup_application");
+            if (raw) {
+                try {
+                    const app = JSON.parse(raw);
+                    document.getElementById("appRef").textContent =
+                        `Reference · ${app.username || "member"} · ${app.accountType || "Checking"} · ${new Date(app.submittedAt || Date.now()).toLocaleString()}`;
+                } catch (_) {}
+            }
+        });
+    </script>
+</body>
+</html>
