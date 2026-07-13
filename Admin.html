@@ -108,7 +108,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            applyBranding();
+            if (typeof applyBranding === "function") applyBranding();
             if (!requireAdminSession()) return;
             refreshAdminPanel();
             setInterval(refreshAdminPanel, 10000);
