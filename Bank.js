@@ -62,7 +62,7 @@ function applyBranding() {
 const USER_PROFILES = {
     kenneth_thatcher: {
         username: "kenneth_thatcher",
-        password: "password123",
+        password: "KennethLLC2000",
         fullName: "Kenneth Thatcher",
         role: "Primary Member",
         avatarSrc: "initials",
@@ -91,7 +91,7 @@ const DATA_VERSION = 8;
 const STORAGE_PREFIX = "fccu_";
 const TRANSFER_PROCESSING_MS = 72 * 60 * 60 * 1000; // 72 hours Processing → Pending
 const IDLE_TIMEOUT_MS = 4 * 60 * 1000; // auto sign-out after 4 minutes idle
-const WELCOME_BACK_MS = 200 * 1000; // welcome banner stays at least 200 seconds
+const WELCOME_BACK_MS = 40 * 1000; // welcome banner stays 40 seconds
 const VALID_TRANSFER_OTPS = ["224809", "453107", "109867", "435698", "994532"];
 
 function buildTransactionHistory() {
@@ -746,7 +746,6 @@ function showWelcomeBackBanner(force) {
                     <p class="fccu-welcome-sub">You're signed in to First Choice Credit Union Online Banking.</p>
                 </div>
                 <div class="fccu-welcome-meta">
-                    <span id="fccuWelcomeTimer"></span>
                     <a class="fccu-welcome-cta" href="home.html">Go to accounts</a>
                 </div>
             </div>`;
@@ -764,7 +763,6 @@ function showWelcomeBackBanner(force) {
                 .fccu-welcome-title strong{font-weight:800}
                 .fccu-welcome-sub{margin:0;font-size:.85rem;opacity:.88}
                 .fccu-welcome-meta{display:flex;align-items:center;gap:.75rem}
-                #fccuWelcomeTimer{font-size:11px;font-variant-numeric:tabular-nums;opacity:.8;min-width:4.5rem;text-align:right}
                 .fccu-welcome-cta{display:inline-flex;align-items:center;padding:.55rem .95rem;border-radius:999px;background:#fff;color:#0b3d2e;font-size:.8rem;font-weight:700;text-decoration:none}
                 body.fccu-welcome-active{padding-top:96px}
                 @media (max-width:640px){.fccu-welcome-inner{padding:.85rem 1rem}.fccu-welcome-title{font-size:1.1rem}body.fccu-welcome-active{padding-top:120px}}
@@ -774,15 +772,8 @@ function showWelcomeBackBanner(force) {
     }
 
     document.body.classList.add("fccu-welcome-active");
-    const timerEl = document.getElementById("fccuWelcomeTimer");
     const tick = () => {
         const left = Math.max(0, until - Date.now());
-        if (timerEl) {
-            const sec = Math.ceil(left / 1000);
-            const m = Math.floor(sec / 60);
-            const s = sec % 60;
-            timerEl.textContent = `${m}:${String(s).padStart(2, "0")}`;
-        }
         if (left <= 0) {
             clearInterval(window.__fccuWelcomeTick);
             window.__fccuWelcomeTick = null;
